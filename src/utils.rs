@@ -16,14 +16,14 @@ pub fn format_hms(secs: f64) -> String {
     };
     if hours > 0 {
         format!(
-            "{hours}:{mins:02}:{secs}",
+            "{hours}h{mins:02}m{secs}s",
             hours = hours,
             mins = mins % 60,
             secs=secs_fmt
         )
     } else {
         format!(
-            "{mins:02}:{secs}",
+            "{mins}m{secs}s",
             mins = mins % 60,
             secs=secs_fmt
         )

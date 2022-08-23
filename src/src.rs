@@ -110,7 +110,7 @@ impl<'a> CategoriesRepository<'a> {
     }
 
     /// fetches data from the SRC API and creates a CategoriesRepository
-    async fn new_with_fetch(src_client: &SpeedrunApiClientAsync,) -> Result<CategoriesRepository<'_>, SRCError> {
+    pub async fn new_with_fetch(src_client: &SpeedrunApiClientAsync,) -> Result<CategoriesRepository<'_>, SRCError> {
         let categories = get_categories(src_client)
             .await?;
         Ok(CategoriesRepository::new(categories))
@@ -171,7 +171,7 @@ pub async fn get_runs(src_client: &SpeedrunApiClientAsync) -> Result<Vec<SRCRun<
     Ok(runs)
 }
 
-async fn get_categories(
+pub async fn get_categories(
     src_client: &SpeedrunApiClientAsync,
 ) -> Result<Vec<Category<'_>>, SRCError> {
     // we're gonna just get category-relevant variables in here because i don't care about

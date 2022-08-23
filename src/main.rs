@@ -6,31 +6,26 @@ extern crate diesel_enum_derive;
 use diesel::prelude::*;
 use diesel::result::Error;
 use diesel::{Connection, SqliteConnection};
-use std::collections::{HashMap, HashSet};
+use std::collections::{HashMap};
 use std::env;
 use std::env::VarError;
 use std::fmt::Debug;
-use std::fs::read_to_string;
 use std::num::{NonZeroU64, ParseIntError};
 use std::time::Duration;
-use diesel::migration::MigrationSource;
 use diesel_migrations::{EmbeddedMigrations, MigrationHarness};
 
 use crate::models::{NewRun, Run, RunState, UpdateRun};
-use speedrun_api::api::Root;
 use speedrun_api::SpeedrunApiClientAsync;
-use twilight_http::{Client, Response};
+use twilight_http::{Client};
 use twilight_http::api_error::{ApiError, RatelimitedApiError};
 use twilight_http::error::ErrorType;
 use twilight_http::response::{DeserializeBodyError, HeaderIter};
-use twilight_model::channel::{Channel, ChannelType, Webhook};
-use twilight_model::id::marker::{ApplicationMarker, ChannelMarker, WebhookMarker};
+use twilight_model::channel::{Channel, ChannelType};
+use twilight_model::id::marker::{ApplicationMarker, ChannelMarker};
 use twilight_model::id::Id;
-use twilight_util::link::webhook::parse;
 use crate::models::RunState::ThreadCreated;
-use crate::OperationOutcome::NoOp;
 
-use crate::src::{get_runs, CategoriesRepository, Category, SRCError, SRCRun};
+use crate::src::{get_runs, CategoriesRepository, SRCError, SRCRun};
 use crate::utils::{env_var, format_hms, secs_to_millis};
 
 mod models;
@@ -86,13 +81,6 @@ impl From<DiscordError> for BotError {
     }
 }
 
-fn debug_str<D: Debug>(d: D) -> String {
-    format!("{:?}", d)
-}
-
-fn discard<T>(_t: T) -> () {
-    ()
-}
 
 #[derive(Debug)]
 enum DiscordError {
@@ -237,10 +225,6 @@ impl BotDiscordClient {
     // TODO: async fn validate_webhook or something like that
 }
 
-enum OperationOutcome<T> {
-    NoOp,
-    Success(Option<RateLimitInfo>, T),
-}
 
 /// mutates `db_run` in place
 async fn create_run_thread(
@@ -385,7 +369,7 @@ async fn run_once(
 fn http_error_to_ratelimit(httpe: twilight_http::Error) -> Option<RatelimitedApiError> {
     let (kind, _) = httpe.into_parts();
     match kind {
-        ErrorType::Response { body, error, status } => {
+        ErrorType::Response { error, ..  } => {
             match error {
                 ApiError::Ratelimited(rl) => {
                     Some(rl)
@@ -404,10 +388,10 @@ async fn main() {
     dotenv::dotenv().unwrap();
     let src_client = SpeedrunApiClientAsync::new().unwrap();
     let discord_client = BotDiscordClient::new_from_env().unwrap();
-    let categories =
-        read_to_string("api_responses/game_categories_embedded_variables.json").unwrap();
-    let c = serde_json::from_str::<Root<Vec<Category>>>(&categories);
-    let cr = CategoriesRepository::new(c.unwrap().data);
+    // let categories =
+    //     read_to_string("api_responses/game_categories_embedded_variables.json").unwrap();
+    // let c = serde_json::from_str::<Root<Vec<Category>>>(&categories);
+    let cr = CategoriesRepository::new_with_fetch(&src_client).await.unwrap();
 
     let database_url = env_var("DATABASE_URL");
     let mut diesel_conn =
