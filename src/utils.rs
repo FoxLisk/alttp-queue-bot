@@ -30,6 +30,11 @@ pub fn format_hms(secs: f64) -> String {
     }
 }
 
+pub fn secs_to_millis(secs: f64) -> u64 {
+    let millis = secs * 1000.0;
+    millis.ceil() as u64
+}
+
 /// Gets env var, panics if it's missing
 pub fn env_var(key: &str) -> String {
     std::env::var(key).expect(&format!("Missing environment variable: `{}`", key))

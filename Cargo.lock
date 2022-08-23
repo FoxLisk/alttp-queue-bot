@@ -43,6 +43,8 @@ version = "0.1.0"
 dependencies = [
  "aliri_braid",
  "diesel",
+ "diesel_enum_derive",
+ "diesel_migrations",
  "dotenv",
  "futures-util",
  "libsqlite3-sys",
@@ -231,6 +233,26 @@ dependencies = [
  "proc-macro2",
  "quote",
  "syn",
+]
+
+[[package]]
+name = "diesel_enum_derive"
+version = "0.1.0"
+source = "git+https://github.com/FoxLisk/diesel_enum_derive#90495e37902f9afd9eb0b3fbaaff9d6406ef936a"
+dependencies = [
+ "quote",
+ "syn",
+]
+
+[[package]]
+name = "diesel_migrations"
+version = "2.0.0-rc.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "af3e284b00439e362c3f55849a103f38b4c5a9918ae3cf34fca2268b6eb52fef"
+dependencies = [
+ "diesel",
+ "migrations_internals",
+ "migrations_macros",
 ]
 
 [[package]]
@@ -607,6 +629,27 @@ name = "memchr"
 version = "2.5.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "2dffe52ecf27772e601905b7522cb4ef790d2cc203488bbd0e2fe85fcb74566d"
+
+[[package]]
+name = "migrations_internals"
+version = "2.0.0-rc.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "e03913f1a1c044aa53b37c8f34011599bbf98914092a0444081555e9ca35022c"
+dependencies = [
+ "serde",
+ "toml",
+]
+
+[[package]]
+name = "migrations_macros"
+version = "2.0.0-rc.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "9ccfa634200e9de9fe6497f568d54951e933e9e0ddf61058e52e24bda896de48"
+dependencies = [
+ "migrations_internals",
+ "proc-macro2",
+ "quote",
+]
 
 [[package]]
 name = "mime"
@@ -1231,6 +1274,15 @@ dependencies = [
  "pin-project-lite",
  "tokio",
  "tracing",
+]
+
+[[package]]
+name = "toml"
+version = "0.5.9"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "8d82e1a7758622a465f8cee077614c73484dac5b836c02ff6a40d5d1010324d7"
+dependencies = [
+ "serde",
 ]
 
 [[package]]

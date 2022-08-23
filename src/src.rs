@@ -50,7 +50,7 @@ pub struct Times {
 }
 
 #[derive(Deserialize, Debug)]
-pub struct Run<'a> {
+pub struct SRCRun<'a> {
     pub id: RunId<'a>,
     pub weblink: String,
     pub category: CategoryId<'a>,
@@ -62,7 +62,7 @@ pub struct Run<'a> {
     pub values: HashMap<VariableId<'a>, ValueId<'a>>,
 }
 
-impl<'a> Run<'a> {
+impl<'a> SRCRun<'a> {
     pub fn player(&self) -> Option<&str> {
         self.players.data.first().map(|p| p.name())
     }
@@ -132,7 +132,7 @@ impl<'a> CategoriesRepository<'a> {
         None
     }
 
-    pub fn category_name(&self, run: &Run) -> Option<String> {
+    pub fn category_name(&self, run: &SRCRun) -> Option<String> {
         let cat = self.categories.get(&run.category)?;
         match Self::subcategory_name(cat, &run.values) {
             // alttp uses "subcategories" kind of weirdly. our categories are rulesets and our
@@ -146,7 +146,7 @@ impl<'a> CategoriesRepository<'a> {
 }
 
 
-pub async fn get_runs(src_client: &SpeedrunApiClientAsync) -> Result<Vec<Run<'_>>, SRCError> {
+pub async fn get_runs(src_client: &SpeedrunApiClientAsync) -> Result<Vec<SRCRun<'_>>, SRCError> {
     let runs: Runs = Runs::builder()
         .status(api::runs::RunStatus::New)
         .game(ALTTP_GAME_ID)
@@ -156,7 +156,7 @@ pub async fn get_runs(src_client: &SpeedrunApiClientAsync) -> Result<Vec<Run<'_>
         .build()
         .unwrap();
 
-    let mut runs_stream = runs.stream::<Run, SpeedrunApiClientAsync>(&src_client);
+    let mut runs_stream = runs.stream::<SRCRun, SpeedrunApiClientAsync>(&src_client);
 
     let mut runs = vec![];
     while let Some(t) = runs_stream.next().await {
