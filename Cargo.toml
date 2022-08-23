@@ -1,0 +1,24 @@
+[package]
+name = "alttp-queue-bot"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+tokio = { version = "1", features = ["macros", "rt-multi-thread"] }
+serde = "1"
+serde_json = "1"
+futures-util = "0.3"
+twilight-http = "0.12.1"
+twilight-model = "0.12.1"
+twilight-util = { version = "0.12.1", features=["link"]}
+dotenv = "0.15.0"
+aliri_braid = "0.2.4"
+libsqlite3-sys = { version = "=0.24.2", features = ["bundled"]}
+diesel = { version = "2.0.0-rc.1", features = ["sqlite"] }
+#speedrun-api = "1.1.1"
+
+[dependencies.speedrun-api]
+path = "../speedrun-api"
+#version = "1.1.1"

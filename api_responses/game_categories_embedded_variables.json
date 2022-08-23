@@ -1,0 +1,876 @@
+{
+  "data": [
+    {
+      "id": "wk6jz5rd",
+      "name": "No Major Glitches",
+      "weblink": "https://www.speedrun.com/alttp#No_Major_Glitches",
+      "type": "per-game",
+      "rules": "**PLEASE ALSO READ THE GAME RULES**",
+      "players": {
+        "type": "exactly",
+        "value": 1
+      },
+      "miscellaneous": false,
+      "links": [
+        {
+          "rel": "self",
+          "uri": "https://www.speedrun.com/api/v1/categories/wk6jz5rd"
+        },
+        {
+          "rel": "game",
+          "uri": "https://www.speedrun.com/api/v1/games/9d3rr0dl"
+        },
+        {
+          "rel": "variables",
+          "uri": "https://www.speedrun.com/api/v1/categories/wk6jz5rd/variables"
+        },
+        {
+          "rel": "records",
+          "uri": "https://www.speedrun.com/api/v1/categories/wk6jz5rd/records"
+        },
+        {
+          "rel": "runs",
+          "uri": "https://www.speedrun.com/api/v1/runs?category=wk6jz5rd"
+        },
+        {
+          "rel": "leaderboard",
+          "uri": "https://www.speedrun.com/api/v1/leaderboards/9d3rr0dl/category/wk6jz5rd"
+        }
+      ],
+      "variables": {
+        "data": [
+          {
+            "id": "2lg2368p",
+            "name": "Sub Category",
+            "category": "wk6jz5rd",
+            "scope": {
+              "type": "full-game"
+            },
+            "mandatory": true,
+            "user-defined": false,
+            "obsoletes": true,
+            "values": {
+              "_note": "`choices` is deprecated, please use `values` instead",
+              "choices": {
+                "013xwzr1": "Any%",
+                "gq7342dl": "Any% (S&Q)",
+                "rqvx6jrl": "100%",
+                "9qjxwkgl": "Low%",
+                "5len3pml": "Low% Legacy",
+                "0q54xd7l": "Master Sword"
+              },
+              "values": {
+                "013xwzr1": {
+                  "label": "Any%",
+                  "rules": "-------------------------\r\nCATEGORY RULES\r\n-------------------------\r\n\r\n1) Timing starts on file select and ends upon entering the Triforce room.\r\n\r\n2) Save & Quit, including intentionally dying on the overworld to emulate a Save & Quit, is banned.\r\n\r\n-------------------------\r\nNO MAJOR GLITCHES\r\n-------------------------\r\n\r\nThis category is meant to be played like an optimized casual playthrough, allowing some glitches and some sequence breaking.\r\n\r\nThe following techniques are **ALLOWED** in NMG categories:\r\n* Bomb Jumps\r\n* Silverless Ganon\r\n* Torch Glitch\r\n* Houlihan\r\n* Item Dashing\r\n* Superspeed (Armed & Active)\r\n\t* This includes pot and bottle spinspeed using underworld stairs\r\n\t* Somaria Bounce method is limited to RMG applications due to Somaria Bounce being RMG\r\n* Block Push Glitches (Hook/Fire Rod/Mirror)\r\n* Big Bomb Dupe\r\n* Big Bomb/Purple Chest Dashing\r\n* Interior Rail Clipping\r\n* Hovering\r\n* Fake Flippers\r\n* Waterwalk\r\n* Damage Overriding (i.e. Fire Rod Doubles)\r\n* Forcing Enemies Off Screen or Out of Bounds (Example)\r\n* Spooky Action at a Distance\r\n* Pit-based clipping (i.e. Hammeryump, Mire bomb jump, GT torches 1 pot)\r\n* Ancilla Overloading\r\n* Fake Items (Powder, Bow, Mirror, etc.)\r\n* Heart/Fairy Dupe\r\n* Slippery Stair Clip\r\n* Bonk Prize Pre-Grab\r\n* Boomerange\r\n* Bastard Door Early Item Drop\r\n* Medallion Cancel\r\n* Magic Cape Cheapskate\r\n* Magic Overflow\r\n* LSD Blind\r\n* Remote Purple Chest\r\n* Sanc & Quit\r\n* Prize on the Eyes\r\n* Bunny Glitches\r\n\t* Super Bunny\r\n\t* Surfing/Wriggling Bunny\r\n\t* Bunny Dungeon Revival\r\n\t* 0HP Dungeon Revival\r\n\t* Overworld Bunny Revival\r\n\t* Unbunny Beam\r\n\t* Bunny Pocket",
+                  "flags": {
+                    "miscellaneous": false
+                  }
+                },
+                "gq7342dl": {
+                  "label": "Any% (S&Q)",
+                  "rules": "-------------------------\r\nCATEGORY RULES\r\n-------------------------\r\n\r\n1) Timing starts on file select and ends upon entering the Triforce room.\r\n\r\n2) Save & Quit is allowed.\r\n\r\n-------------------------\r\nNO MAJOR GLITCHES\r\n-------------------------\r\n\r\nThis category is meant to be played like an optimized casual playthrough, allowing some glitches and some sequence breaking.\r\n\r\nThe following techniques are **ALLOWED** in NMG categories:\r\n* Bomb Jumps\r\n* Silverless Ganon\r\n* Torch Glitch\r\n* Houlihan\r\n* Item Dashing\r\n* Superspeed (Armed & Active)\r\n\t* This includes pot and bottle spinspeed using underworld stairs\r\n\t* Somaria Bounce method is limited to RMG applications due to Somaria Bounce being RMG\r\n* Block Push Glitches (Hook/Fire Rod/Mirror)\r\n* Big Bomb Dupe\r\n* Big Bomb/Purple Chest Dashing\r\n* Interior Rail Clipping\r\n* Hovering\r\n* Fake Flippers\r\n* Waterwalk\r\n* Damage Overriding (i.e. Fire Rod Doubles)\r\n* Forcing Enemies Off Screen or Out of Bounds (Example)\r\n* Spooky Action at a Distance\r\n* Pit-based clipping (i.e. Hammeryump, Mire bomb jump, GT torches 1 pot)\r\n* Ancilla Overloading\r\n* Fake Items (Powder, Bow, Mirror, etc.)\r\n* Heart/Fairy Dupe\r\n* Slippery Stair Clip\r\n* Bonk Prize Pre-Grab\r\n* Boomerange\r\n* Bastard Door Early Item Drop\r\n* Medallion Cancel\r\n* Magic Cape Cheapskate\r\n* Magic Overflow\r\n* LSD Blind\r\n* Remote Purple Chest\r\n* Sanc & Quit\r\n* Prize on the Eyes\r\n* Bunny Glitches\r\n\t* Super Bunny\r\n\t* Surfing/Wriggling Bunny\r\n\t* Bunny Dungeon Revival\r\n\t* 0HP Dungeon Revival\r\n\t* Overworld Bunny Revival\r\n\t* Unbunny Beam\r\n\t* Bunny Pocket",
+                  "flags": {
+                    "miscellaneous": false
+                  }
+                },
+                "rqvx6jrl": {
+                  "label": "100%",
+                  "rules": "-------------------------\r\nCATEGORY RULES\r\n-------------------------\r\n\r\n1) Timing starts on file select and ends upon entering the Triforce room.\r\n\r\n2) Save & Quit, including intentionally dying on the overworld to emulate a Save & Quit, is banned.\r\n\r\n3) This requires a full inventory with all maximum level items, 20 hearts and 1/2 magic. Intermediary upgrades and the bomb/arrow upgrades are not required.\r\n\r\n***PLEASE RESET AND SHOW YOUR MENU + 4 BOTTLES AFTER THE CREDITS!***\r\n\r\nThis is not a hard requirement, but will greatly assist us in verifying your run, thank you!\r\n\r\n-------------------------\r\nNO MAJOR GLITCHES\r\n-------------------------\r\n\r\nThis category is meant to be played like an optimized casual playthrough, allowing some glitches and some sequence breaking.\r\n\r\nThe following techniques are **ALLOWED** in NMG categories:\r\n* Bomb Jumps\r\n* Silverless Ganon\r\n* Torch Glitch\r\n* Houlihan\r\n* Item Dashing\r\n* Superspeed (Armed & Active)\r\n\t* This includes pot and bottle spinspeed using underworld stairs\r\n\t* Somaria Bounce method is limited to RMG applications due to Somaria Bounce being RMG\r\n* Block Push Glitches (Hook/Fire Rod/Mirror)\r\n* Big Bomb Dupe\r\n* Big Bomb/Purple Chest Dashing\r\n* Interior Rail Clipping\r\n* Hovering\r\n* Fake Flippers\r\n* Waterwalk\r\n* Damage Overriding (i.e. Fire Rod Doubles)\r\n* Forcing Enemies Off Screen or Out of Bounds (Example)\r\n* Spooky Action at a Distance\r\n* Pit-based clipping (i.e. Hammeryump, Mire bomb jump, GT torches 1 pot)\r\n* Ancilla Overloading\r\n* Fake Items (Powder, Bow, Mirror, etc.)\r\n* Heart/Fairy Dupe\r\n* Slippery Stair Clip\r\n* Bonk Prize Pre-Grab\r\n* Boomerange\r\n* Bastard Door Early Item Drop\r\n* Medallion Cancel\r\n* Magic Cape Cheapskate\r\n* Magic Overflow\r\n* LSD Blind\r\n* Remote Purple Chest\r\n* Sanc & Quit\r\n* Prize on the Eyes\r\n* Bunny Glitches\r\n\t* Super Bunny\r\n\t* Surfing/Wriggling Bunny\r\n\t* Bunny Dungeon Revival\r\n\t* 0HP Dungeon Revival\r\n\t* Overworld Bunny Revival\r\n\t* Unbunny Beam\r\n\t* Bunny Pocket",
+                  "flags": {
+                    "miscellaneous": false
+                  }
+                },
+                "9qjxwkgl": {
+                  "label": "Low%",
+                  "rules": "-------------------------\r\nCATEGORY RULES\r\n-------------------------\r\n\r\n1) Timing starts on file select and ends upon entering the Triforce room.\r\n\r\n2) Save & Quit, including intentionally dying on the overworld to emulate a Save & Quit, is banned.\r\n\r\n3) You must skip all items and upgrades which are not essential to beat the game. You must finish with 3 heart containers.\r\n\r\n-------------------------\r\nNO MAJOR GLITCHES\r\n-------------------------\r\n\r\nThis category is meant to be played like an optimized casual playthrough, allowing some glitches and some sequence breaking.\r\n\r\nThe following techniques are **ALLOWED** in NMG categories:\r\n* Bomb Jumps\r\n* Silverless Ganon\r\n* Torch Glitch\r\n* Houlihan\r\n* Item Dashing\r\n* Superspeed (Armed & Active)\r\n\t* This includes pot and bottle spinspeed using underworld stairs\r\n\t* Somaria Bounce method is limited to RMG applications due to Somaria Bounce being RMG\r\n* Block Push Glitches (Hook/Fire Rod/Mirror)\r\n* Big Bomb Dupe\r\n* Big Bomb/Purple Chest Dashing\r\n* Interior Rail Clipping\r\n* Hovering\r\n* Fake Flippers\r\n* Waterwalk\r\n* Damage Overriding (i.e. Fire Rod Doubles)\r\n* Forcing Enemies Off Screen or Out of Bounds (Example)\r\n* Spooky Action at a Distance\r\n* Pit-based clipping (i.e. Hammeryump, Mire bomb jump, GT torches 1 pot)\r\n* Ancilla Overloading\r\n* Fake Items (Powder, Bow, Mirror, etc.)\r\n* Heart/Fairy Dupe\r\n* Slippery Stair Clip\r\n* Bonk Prize Pre-Grab\r\n* Boomerange\r\n* Bastard Door Early Item Drop\r\n* Medallion Cancel\r\n* Magic Cape Cheapskate\r\n* Magic Overflow\r\n* LSD Blind\r\n* Remote Purple Chest\r\n* Sanc & Quit\r\n* Prize on the Eyes\r\n* Bunny Glitches\r\n\t* Super Bunny\r\n\t* Surfing/Wriggling Bunny\r\n\t* Bunny Dungeon Revival\r\n\t* 0HP Dungeon Revival\r\n\t* Overworld Bunny Revival\r\n\t* Unbunny Beam\r\n\t* Bunny Pocket",
+                  "flags": {
+                    "miscellaneous": false
+                  }
+                },
+                "5len3pml": {
+                  "label": "Low% Legacy",
+                  "rules": "-------------------------\r\nCATEGORY RULES\r\n-------------------------\r\n\r\n1) Timing starts on file select and ends upon entering the Triforce room.\r\n\r\n2) Save & Quit, including intentionally dying on the overworld to emulate a Save & Quit, is banned.\r\n\r\n3) You must skip all items and upgrades which are not essential to beat the game. This uses the OLD rule set which does not require skipping heart container pickups. All other NMG rules apply.\r\n\r\n-------------------------\r\nNO MAJOR GLITCHES\r\n-------------------------\r\n\r\nThis category is meant to be played like an optimized casual playthrough, allowing some glitches and some sequence breaking.\r\n\r\nThe following techniques are **ALLOWED** in NMG categories:\r\n* Bomb Jumps\r\n* Silverless Ganon\r\n* Torch Glitch\r\n* Houlihan\r\n* Item Dashing\r\n* Superspeed (Armed & Active)\r\n\t* This includes pot and bottle spinspeed using underworld stairs\r\n\t* Somaria Bounce method is limited to RMG applications due to Somaria Bounce being RMG\r\n* Block Push Glitches (Hook/Fire Rod/Mirror)\r\n* Big Bomb Dupe\r\n* Big Bomb/Purple Chest Dashing\r\n* Interior Rail Clipping\r\n* Hovering\r\n* Fake Flippers\r\n* Waterwalk\r\n* Damage Overriding (i.e. Fire Rod Doubles)\r\n* Forcing Enemies Off Screen or Out of Bounds (Example)\r\n* Spooky Action at a Distance\r\n* Pit-based clipping (i.e. Hammeryump, Mire bomb jump, GT torches 1 pot)\r\n* Ancilla Overloading\r\n* Fake Items (Powder, Bow, Mirror, etc.)\r\n* Heart/Fairy Dupe\r\n* Slippery Stair Clip\r\n* Bonk Prize Pre-Grab\r\n* Boomerange\r\n* Bastard Door Early Item Drop\r\n* Medallion Cancel\r\n* Magic Cape Cheapskate\r\n* Magic Overflow\r\n* LSD Blind\r\n* Remote Purple Chest\r\n* Sanc & Quit\r\n* Prize on the Eyes\r\n* Bunny Glitches\r\n\t* Super Bunny\r\n\t* Surfing/Wriggling Bunny\r\n\t* Bunny Dungeon Revival\r\n\t* 0HP Dungeon Revival\r\n\t* Overworld Bunny Revival\r\n\t* Unbunny Beam\r\n\t* Bunny Pocket",
+                  "flags": {
+                    "miscellaneous": false
+                  }
+                },
+                "0q54xd7l": {
+                  "label": "Master Sword",
+                  "rules": "-------------------------\r\nCATEGORY RULES\r\n-------------------------\r\n\r\n1) Timing starts on file select and ends upon collecting the Master Sword.\r\n\r\n2) Save & Quit is allowed.\r\n\r\n-------------------------\r\nNO MAJOR GLITCHES\r\n-------------------------\r\n\r\nThis category is meant to be played like an optimized casual playthrough, allowing some glitches and some sequence breaking.\r\n\r\nThe following techniques are **ALLOWED** in NMG categories:\r\n* Bomb Jumps\r\n* Silverless Ganon\r\n* Torch Glitch\r\n* Houlihan\r\n* Item Dashing\r\n* Superspeed (Armed & Active)\r\n\t* This includes pot and bottle spinspeed using underworld stairs\r\n\t* Somaria Bounce method is limited to RMG applications due to Somaria Bounce being RMG\r\n* Block Push Glitches (Hook/Fire Rod/Mirror)\r\n* Big Bomb Dupe\r\n* Big Bomb/Purple Chest Dashing\r\n* Interior Rail Clipping\r\n* Hovering\r\n* Fake Flippers\r\n* Waterwalk\r\n* Damage Overriding (i.e. Fire Rod Doubles)\r\n* Forcing Enemies Off Screen or Out of Bounds (Example)\r\n* Spooky Action at a Distance\r\n* Pit-based clipping (i.e. Hammeryump, Mire bomb jump, GT torches 1 pot)\r\n* Ancilla Overloading\r\n* Fake Items (Powder, Bow, Mirror, etc.)\r\n* Heart/Fairy Dupe\r\n* Slippery Stair Clip\r\n* Bonk Prize Pre-Grab\r\n* Boomerange\r\n* Bastard Door Early Item Drop\r\n* Medallion Cancel\r\n* Magic Cape Cheapskate\r\n* Magic Overflow\r\n* LSD Blind\r\n* Remote Purple Chest\r\n* Sanc & Quit\r\n* Prize on the Eyes\r\n* Bunny Glitches\r\n\t* Super Bunny\r\n\t* Surfing/Wriggling Bunny\r\n\t* Bunny Dungeon Revival\r\n\t* 0HP Dungeon Revival\r\n\t* Overworld Bunny Revival\r\n\t* Unbunny Beam\r\n\t* Bunny Pocket",
+                  "flags": {
+                    "miscellaneous": false
+                  }
+                }
+              },
+              "default": "013xwzr1"
+            },
+            "is-subcategory": true,
+            "links": [
+              {
+                "rel": "self",
+                "uri": "https://www.speedrun.com/api/v1/variables/2lg2368p"
+              },
+              {
+                "rel": "game",
+                "uri": "https://www.speedrun.com/api/v1/games/9d3rr0dl"
+              },
+              {
+                "rel": "category",
+                "uri": "https://www.speedrun.com/api/v1/categories/wk6jz5rd"
+              }
+            ]
+          },
+          {
+            "id": "rn1wzdlj",
+            "name": "Blue Balls",
+            "category": null,
+            "scope": {
+              "type": "full-game"
+            },
+            "mandatory": true,
+            "user-defined": false,
+            "obsoletes": true,
+            "values": {
+              "_note": "`choices` is deprecated, please use `values` instead",
+              "choices": {
+                "gq7298p1": "-",
+                "810604o1": "0",
+                "9qj2w371": "1",
+                "jq6vydv1": "2",
+                "5lm2858q": "3",
+                "81w7eymq": "4",
+                "zqojm451": "5",
+                "013xwgr1": "6",
+                "rqvx68rl": "7",
+                "5len3jml": "8",
+                "0q54xr7l": "9",
+                "4lxg0n3q": "10",
+                "8149kzeq": "11",
+                "z19x5ny1": "12",
+                "p129o7dl": "13",
+                "81pe49vl": "14",
+                "xqko9vd1": "15"
+              },
+              "values": {
+                "gq7298p1": {
+                  "label": "-"
+                },
+                "810604o1": {
+                  "label": "0"
+                },
+                "9qj2w371": {
+                  "label": "1"
+                },
+                "jq6vydv1": {
+                  "label": "2"
+                },
+                "5lm2858q": {
+                  "label": "3"
+                },
+                "81w7eymq": {
+                  "label": "4"
+                },
+                "zqojm451": {
+                  "label": "5"
+                },
+                "013xwgr1": {
+                  "label": "6"
+                },
+                "rqvx68rl": {
+                  "label": "7"
+                },
+                "5len3jml": {
+                  "label": "8"
+                },
+                "0q54xr7l": {
+                  "label": "9"
+                },
+                "4lxg0n3q": {
+                  "label": "10"
+                },
+                "8149kzeq": {
+                  "label": "11"
+                },
+                "z19x5ny1": {
+                  "label": "12"
+                },
+                "p129o7dl": {
+                  "label": "13"
+                },
+                "81pe49vl": {
+                  "label": "14"
+                },
+                "xqko9vd1": {
+                  "label": "15"
+                }
+              },
+              "default": null
+            },
+            "is-subcategory": false,
+            "links": [
+              {
+                "rel": "self",
+                "uri": "https://www.speedrun.com/api/v1/variables/rn1wzdlj"
+              },
+              {
+                "rel": "game",
+                "uri": "https://www.speedrun.com/api/v1/games/9d3rr0dl"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "ndx9y8rd",
+      "name": "Restricted Major Glitches",
+      "weblink": "https://www.speedrun.com/alttp#Restricted_Major_Glitches",
+      "type": "per-game",
+      "rules": "**PLEASE ALSO READ THE GAME RULES**",
+      "players": {
+        "type": "exactly",
+        "value": 1
+      },
+      "miscellaneous": false,
+      "links": [
+        {
+          "rel": "self",
+          "uri": "https://www.speedrun.com/api/v1/categories/ndx9y8rd"
+        },
+        {
+          "rel": "game",
+          "uri": "https://www.speedrun.com/api/v1/games/9d3rr0dl"
+        },
+        {
+          "rel": "variables",
+          "uri": "https://www.speedrun.com/api/v1/categories/ndx9y8rd/variables"
+        },
+        {
+          "rel": "records",
+          "uri": "https://www.speedrun.com/api/v1/categories/ndx9y8rd/records"
+        },
+        {
+          "rel": "runs",
+          "uri": "https://www.speedrun.com/api/v1/runs?category=ndx9y8rd"
+        },
+        {
+          "rel": "leaderboard",
+          "uri": "https://www.speedrun.com/api/v1/leaderboards/9d3rr0dl/category/ndx9y8rd"
+        }
+      ],
+      "variables": {
+        "data": [
+          {
+            "id": "jlz5497l",
+            "name": "Sub Category",
+            "category": "ndx9y8rd",
+            "scope": {
+              "type": "full-game"
+            },
+            "mandatory": true,
+            "user-defined": false,
+            "obsoletes": true,
+            "values": {
+              "_note": "`choices` is deprecated, please use `values` instead",
+              "choices": {
+                "klry94jq": "Any%",
+                "gq7rpdnl": "All Dungeons",
+                "21g25dxl": "100%",
+                "9qjx9n0l": "Master Sword"
+              },
+              "values": {
+                "klry94jq": {
+                  "label": "Any%",
+                  "rules": "-------------------------\r\nCATEGORY RULES\r\n-------------------------\r\n\r\n1) Timing starts on file select and ends upon entering the Triforce room. \r\n\r\n2) An input display is preferred but not required.\r\n\r\n-------------------------\r\nRESTRICTED MAJOR GLITCHES\r\n-------------------------\r\n\r\nThis category is meant as a gateway to the glitched speedruns. Generally any sequence breaks on the overworld are allowed, and the glitches themselves are generally not very complicated to do. This ruleset does not allow for major glitches such as underworld EG, underworld transition corruptions, Plaid World, and misslotting.\r\n\r\nThe following techniques are **ALLOWED** in RMG Categories:\r\n* All NMG Legal Techniques\r\n* Saving and Quitting (S&Q), and intentionally dying to emulate a Save and Quit\r\n* Overworld Clipping & Out of Bounds\r\n\t* Wall Clipping\r\n\t* Teleports\r\n\t* FAWT\r\n\t* Slope Swim Clip (Swimmy G)\r\n* Underworld Clipping\r\n\t* Wall Clipping\r\n\t* Teleports\r\n\t* Herapot\r\n\t* Fake Clippers\r\n\t* Stair-Aided Rail Clip (i.e. Diver Down)\r\n* Overworld Mirror Glitches\r\n\t* Mirror Wrap\r\n\t* Mirror Clipping\r\n\t* Mirror Jump\r\n* Overworld YBAs\r\n* Overworld EG\r\n* Door State Extension (Ice Breaker, etc.)\r\n* Somaria Lamp Bounce\r\n* Remote Control Boomerang\r\n* Potion Camera Unlock\r\n* Extended Auto Stairs\r\n* Barrier Revival",
+                  "flags": {
+                    "miscellaneous": false
+                  }
+                },
+                "gq7rpdnl": {
+                  "label": "All Dungeons",
+                  "rules": "-------------------------\r\nCATEGORY RULES\r\n-------------------------\r\n\r\n1) Timing starts on file select and ends upon entering the Triforce room. \r\n\r\n2) Every boss must be defeated and all of the crystals and pendants must be collected.\r\n\r\n3) Rescuing Zelda in Hyrule Castle to end the rain state is required.\r\n\r\n4) An input display is preferred but not required.\r\n\r\n-------------------------\r\nRESTRICTED MAJOR GLITCHES\r\n-------------------------\r\n\r\nThis category is meant as a gateway to the glitched speedruns. Generally any sequence breaks on the overworld are allowed, and the glitches themselves are generally not very complicated to do. This ruleset does not allow for major glitches such as underworld EG, underworld transition corruptions, Plaid World, and misslotting.\r\n\r\nThe following techniques are **ALLOWED** in RMG Categories:\r\n* All NMG Legal Techniques\r\n* Saving and Quitting (S&Q), and intentionally dying to emulate a Save and Quit\r\n* Overworld Clipping & Out of Bounds\r\n\t* Wall Clipping\r\n\t* Teleports\r\n\t* FAWT\r\n\t* Slope Swim Clip (Swimmy G)\r\n* Underworld Clipping\r\n\t* Wall Clipping\r\n\t* Teleports\r\n\t* Herapot\r\n\t* Fake Clippers\r\n\t* Stair-Aided Rail Clip (i.e. Diver Down)\r\n* Overworld Mirror Glitches\r\n\t* Mirror Wrap\r\n\t* Mirror Clipping\r\n\t* Mirror Jump\r\n* Overworld YBAs\r\n* Overworld EG\r\n* Door State Extension (Ice Breaker, etc.)\r\n* Somaria Lamp Bounce\r\n* Remote Control Boomerang\r\n* Potion Camera Unlock\r\n* Extended Auto Stairs\r\n* Barrier Revival",
+                  "flags": {
+                    "miscellaneous": false
+                  }
+                },
+                "21g25dxl": {
+                  "label": "100%",
+                  "rules": "-------------------------\r\nCATEGORY RULES\r\n-------------------------\r\n\r\n1) Timing starts on file select and ends upon entering the Triforce room.\r\n\r\n2) Full inventory with all maximum level items, 20 hearts, and 1/2 magic is required. Intermediary items and bomb/arrow capacity upgrades are not required.\r\n\r\n3) All Bosses must be defeated, including both Agahnims.\r\n\r\n4) Collecting all of the pendants and crystals is required.\r\n\r\n5) All 24 unique Heart Pieces must be collected.\r\n\r\n***PLEASE RESET AND SHOW YOUR MENU + 4 BOTTLES AFTER THE CREDITS!***\r\n\r\nThis is not a hard requirement, but will greatly assist us in verifying your run, thank you!\r\n\r\n-------------------------\r\nRESTRICTED MAJOR GLITCHES\r\n-------------------------\r\n\r\nThis category is meant as a gateway to the glitched speedruns. Generally any sequence breaks on the overworld are allowed, and the glitches themselves are generally not very complicated to do. This ruleset does not allow for major glitches such as underworld EG, underworld transition corruptions, Plaid World, and misslotting.\r\n\r\nThe following techniques are **ALLOWED** in RMG Categories:\r\n* All NMG Legal Techniques\r\n* Saving and Quitting (S&Q), and intentionally dying to emulate a Save and Quit\r\n* Overworld Clipping & Out of Bounds\r\n\t* Wall Clipping\r\n\t* Teleports\r\n\t* FAWT\r\n\t* Slope Swim Clip (Swimmy G)\r\n* Underworld Clipping\r\n\t* Wall Clipping\r\n\t* Teleports\r\n\t* Herapot\r\n\t* Fake Clippers\r\n\t* Stair-Aided Rail Clip (i.e. Diver Down)\r\n* Overworld Mirror Glitches\r\n\t* Mirror Wrap\r\n\t* Mirror Clipping\r\n\t* Mirror Jump\r\n* Overworld YBAs\r\n* Overworld EG\r\n* Door State Extension (Ice Breaker, etc.)\r\n* Somaria Lamp Bounce\r\n* Remote Control Boomerang\r\n* Potion Camera Unlock\r\n* Extended Auto Stairs\r\n* Barrier Revival",
+                  "flags": {
+                    "miscellaneous": false
+                  }
+                },
+                "9qjx9n0l": {
+                  "label": "Master Sword",
+                  "rules": "-------------------------\r\nCATEGORY RULES\r\n-------------------------\r\n\r\n1) Timing starts on file select and ends after pressing A to grab the Master Sword.\r\n\r\n2) An input display is preferred but not required.\r\n\r\n-------------------------\r\nRESTRICTED MAJOR GLITCHES\r\n-------------------------\r\n\r\nThis category is meant as a gateway to the glitched speedruns. Generally any sequence breaks on the overworld are allowed, and the glitches themselves are generally not very complicated to do. This ruleset does not allow for major glitches such as underworld EG, underworld transition corruptions, Plaid World, and misslotting.\r\n\r\nThe following techniques are **ALLOWED** in RMG Categories:\r\n* All NMG Legal Techniques\r\n* Saving and Quitting (S&Q), and intentionally dying to emulate a Save and Quit\r\n* Overworld Clipping & Out of Bounds\r\n\t* Wall Clipping\r\n\t* Teleports\r\n\t* FAWT\r\n\t* Slope Swim Clip (Swimmy G)\r\n* Underworld Clipping\r\n\t* Wall Clipping\r\n\t* Teleports\r\n\t* Herapot\r\n\t* Fake Clippers\r\n\t* Stair-Aided Rail Clip (i.e. Diver Down)\r\n* Overworld Mirror Glitches\r\n\t* Mirror Wrap\r\n\t* Mirror Clipping\r\n\t* Mirror Jump\r\n* Overworld YBAs\r\n* Overworld EG\r\n* Door State Extension (Ice Breaker, etc.)\r\n* Somaria Lamp Bounce\r\n* Remote Control Boomerang\r\n* Potion Camera Unlock\r\n* Extended Auto Stairs\r\n* Barrier Revival",
+                  "flags": {
+                    "miscellaneous": false
+                  }
+                }
+              },
+              "default": "klry94jq"
+            },
+            "is-subcategory": true,
+            "links": [
+              {
+                "rel": "self",
+                "uri": "https://www.speedrun.com/api/v1/variables/jlz5497l"
+              },
+              {
+                "rel": "game",
+                "uri": "https://www.speedrun.com/api/v1/games/9d3rr0dl"
+              },
+              {
+                "rel": "category",
+                "uri": "https://www.speedrun.com/api/v1/categories/ndx9y8rd"
+              }
+            ]
+          },
+          {
+            "id": "rn1wzdlj",
+            "name": "Blue Balls",
+            "category": null,
+            "scope": {
+              "type": "full-game"
+            },
+            "mandatory": true,
+            "user-defined": false,
+            "obsoletes": true,
+            "values": {
+              "_note": "`choices` is deprecated, please use `values` instead",
+              "choices": {
+                "gq7298p1": "-",
+                "810604o1": "0",
+                "9qj2w371": "1",
+                "jq6vydv1": "2",
+                "5lm2858q": "3",
+                "81w7eymq": "4",
+                "zqojm451": "5",
+                "013xwgr1": "6",
+                "rqvx68rl": "7",
+                "5len3jml": "8",
+                "0q54xr7l": "9",
+                "4lxg0n3q": "10",
+                "8149kzeq": "11",
+                "z19x5ny1": "12",
+                "p129o7dl": "13",
+                "81pe49vl": "14",
+                "xqko9vd1": "15"
+              },
+              "values": {
+                "gq7298p1": {
+                  "label": "-"
+                },
+                "810604o1": {
+                  "label": "0"
+                },
+                "9qj2w371": {
+                  "label": "1"
+                },
+                "jq6vydv1": {
+                  "label": "2"
+                },
+                "5lm2858q": {
+                  "label": "3"
+                },
+                "81w7eymq": {
+                  "label": "4"
+                },
+                "zqojm451": {
+                  "label": "5"
+                },
+                "013xwgr1": {
+                  "label": "6"
+                },
+                "rqvx68rl": {
+                  "label": "7"
+                },
+                "5len3jml": {
+                  "label": "8"
+                },
+                "0q54xr7l": {
+                  "label": "9"
+                },
+                "4lxg0n3q": {
+                  "label": "10"
+                },
+                "8149kzeq": {
+                  "label": "11"
+                },
+                "z19x5ny1": {
+                  "label": "12"
+                },
+                "p129o7dl": {
+                  "label": "13"
+                },
+                "81pe49vl": {
+                  "label": "14"
+                },
+                "xqko9vd1": {
+                  "label": "15"
+                }
+              },
+              "default": null
+            },
+            "is-subcategory": false,
+            "links": [
+              {
+                "rel": "self",
+                "uri": "https://www.speedrun.com/api/v1/variables/rn1wzdlj"
+              },
+              {
+                "rel": "game",
+                "uri": "https://www.speedrun.com/api/v1/games/9d3rr0dl"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "n2y180m2",
+      "name": "Major Glitches",
+      "weblink": "https://www.speedrun.com/alttp#Major_Glitches",
+      "type": "per-game",
+      "rules": "**PLEASE ALSO READ THE GAME RULES**",
+      "players": {
+        "type": "exactly",
+        "value": 1
+      },
+      "miscellaneous": false,
+      "links": [
+        {
+          "rel": "self",
+          "uri": "https://www.speedrun.com/api/v1/categories/n2y180m2"
+        },
+        {
+          "rel": "game",
+          "uri": "https://www.speedrun.com/api/v1/games/9d3rr0dl"
+        },
+        {
+          "rel": "variables",
+          "uri": "https://www.speedrun.com/api/v1/categories/n2y180m2/variables"
+        },
+        {
+          "rel": "records",
+          "uri": "https://www.speedrun.com/api/v1/categories/n2y180m2/records"
+        },
+        {
+          "rel": "runs",
+          "uri": "https://www.speedrun.com/api/v1/runs?category=n2y180m2"
+        },
+        {
+          "rel": "leaderboard",
+          "uri": "https://www.speedrun.com/api/v1/leaderboards/9d3rr0dl/category/n2y180m2"
+        }
+      ],
+      "variables": {
+        "data": [
+          {
+            "id": "68kzoq82",
+            "name": "Sub Category",
+            "category": "n2y180m2",
+            "scope": {
+              "type": "full-game"
+            },
+            "mandatory": true,
+            "user-defined": false,
+            "obsoletes": true,
+            "values": {
+              "_note": "`choices` is deprecated, please use `values` instead",
+              "choices": {
+                "klrxj8ol": "Defeat Ganon",
+                "21g9ek6q": "Reverse Boss Order",
+                "21d35g3q": "All Dungeons",
+                "gq729yp1": "All Dungeons (Swordless)",
+                "21dv5k51": "100%",
+                "rqv6ekrl": "All Bosses (No EG)",
+                "p129ogdl": "Any%"
+              },
+              "values": {
+                "klrxj8ol": {
+                  "label": "Defeat Ganon",
+                  "rules": "-------------------------\r\nCATEGORY RULES\r\n-------------------------\r\n\r\n1) Timing starts on file select and ends upon entering the Triforce room.\r\n\r\n2) An input display is preferred but not required.\r\n\r\n-------------------------\r\nMAJOR GLITCHES\r\n-------------------------\r\n\r\nThis ruleset is meant to be very unrestrictive to allow use of most glitches. However, a few things which are extremely powerful are banned, so as not to remove too much actual gameplay from speedruns.\r\n \r\nThe following techniques are **BANNED** in MG categories:\r\n* Arbitrary Code Execution\r\n\t* Causing the game to execute values from memory as code/instructions.\r\n* Arbitrary Memory Writes\r\n\t* Out of Bounds Misslotting:\r\n\t\t* Misslotting an ancilla to any \"slot\" higher than 9, or less than 0 (not currently possible)\r\n\t\t* Any ancilla created must have its ID written to an address between $7E0C4A and $7E0C53, inclusive.\r\n\t* EG2 Out of Bounds Writes\r\n\t\t* Transferring room data to room IDs on the secondary underworld map (EG2), besides those belonging to properly defined rooms\r\n\t\t* Specifically, having your room ID become any value in the range $128 and $1FF, inclusive, by any means, is banned.",
+                  "flags": {
+                    "miscellaneous": false
+                  }
+                },
+                "21g9ek6q": {
+                  "label": "Reverse Boss Order",
+                  "rules": "-------------------------\r\nCATEGORY RULES\r\n-------------------------\r\n\r\n1) Timing starts on file select and ends upon entering the Triforce room. \r\n\r\n2) Bosses must be beaten in reverse order.\r\n- Specifically, this order is: Ganon, Agahnim 2, Trinexx, Vitreous, Kholdstare, Blind, Mothula, Arrghus, Helmasaur King, Agahnim 1, Moldorm, Lanmolas, Armos Knights. \r\n- Ganon does not need to be defeated a second time before entering the Triforce room.\r\n\r\n3) Bosses are considered defeated by the following conditions:\r\n- Ganon: Triforce door opens\r\n- Agahnim 2: The duck carries link to the pyramid\r\n- Agahnim 1: Link warps to the pyramid after the fade to white\r\n- Every other boss: The heart container is collected\r\n\r\n4) Collecting all of the pendants and crystals is required. This can be done by any means and in any order.\r\n\r\n5) Rescuing Zelda in Hyrule Castle to end the rain state is required.\r\n\r\n6) An input display is preferred but not required.\r\n\r\n-------------------------\r\nMAJOR GLITCHES\r\n-------------------------\r\n\r\nThis ruleset is meant to be very unrestrictive to allow use of most glitches. However, a few things which are extremely powerful are banned, so as not to remove too much actual gameplay from speedruns.\r\n \r\nThe following techniques are **BANNED** in MG categories:\r\n* Arbitrary Code Execution\r\n\t* Causing the game to execute values from memory as code/instructions.\r\n* Arbitrary Memory Writes\r\n\t* Out of Bounds Misslotting:\r\n\t\t* Misslotting an ancilla to any \"slot\" higher than 9, or less than 0 (not currently possible)\r\n\t\t* Any ancilla created must have its ID written to an address between $7E0C4A and $7E0C53, inclusive.\r\n\t* EG2 Out of Bounds Writes\r\n\t\t* Transferring room data to room IDs on the secondary underworld map (EG2), besides those belonging to properly defined rooms\r\n\t\t* Specifically, having your room ID become any value in the range $128 and $1FF, inclusive, by any means, is banned.",
+                  "flags": {
+                    "miscellaneous": false
+                  }
+                },
+                "21d35g3q": {
+                  "label": "All Dungeons",
+                  "rules": "-------------------------\r\nCATEGORY RULES\r\n-------------------------\r\n\r\n1) Timing starts on file select and ends upon entering the Triforce room. \r\n\r\n2) All bosses must be defeated. This means all bosses at the end of a dungeon which drop a heart container, both Agahnim fights, and Ganon.\r\n\r\n3) All of the crystals and pendants must be collected. This can be done by any means.\r\n\r\n4) Rescuing Zelda in Hyrule Castle to end the rain state is required.\r\n\r\n5) An input display is preferred but not required.\r\n\r\n-------------------------\r\nMAJOR GLITCHES\r\n-------------------------\r\n\r\nThis ruleset is meant to be very unrestrictive to allow use of most glitches. However, a few things which are extremely powerful are banned, so as not to remove too much actual gameplay from speedruns.\r\n \r\nThe following techniques are **BANNED** in MG categories:\r\n* Arbitrary Code Execution\r\n\t* Causing the game to execute values from memory as code/instructions.\r\n* Arbitrary Memory Writes\r\n\t* Out of Bounds Misslotting:\r\n\t\t* Misslotting an ancilla to any \"slot\" higher than 9, or less than 0 (not currently possible)\r\n\t\t* Any ancilla created must have its ID written to an address between $7E0C4A and $7E0C53, inclusive.\r\n\t* EG2 Out of Bounds Writes\r\n\t\t* Transferring room data to room IDs on the secondary underworld map (EG2), besides those belonging to properly defined rooms\r\n\t\t* Specifically, having your room ID become any value in the range $128 and $1FF, inclusive, by any means, is banned.",
+                  "flags": {
+                    "miscellaneous": false
+                  }
+                },
+                "gq729yp1": {
+                  "label": "All Dungeons (Swordless)",
+                  "rules": "-------------------------\r\nCATEGORY RULES\r\n-------------------------\r\n\r\n1) Timing starts on file select and ends upon entering the Triforce room. \r\n\r\n2) Obtaining a sword at any point is banned.\r\n\r\n3) All bosses must be defeated. This means all bosses at the end of a dungeon which drop a heart container, and both Agahnim fights. Specifically for this category, Ganon does not need to be killed, since it is not possible to do so without a sword.\r\n\r\n4) Collecting all of the pendants and crystals is required. This can be done by any means.\r\n\r\n5) Rescuing Zelda in Hyrule Castle to end the rain state is required.\r\n\r\n6) An input display is preferred but not required.\r\n\r\n-------------------------\r\nMAJOR GLITCHES\r\n-------------------------\r\n\r\nThis ruleset is meant to be very unrestrictive to allow use of most glitches. However, a few things which are extremely powerful are banned, so as not to remove too much actual gameplay from speedruns.\r\n \r\nThe following techniques are **BANNED** in MG categories:\r\n* Arbitrary Code Execution\r\n\t* Causing the game to execute values from memory as code/instructions.\r\n* Arbitrary Memory Writes\r\n\t* Out of Bounds Misslotting:\r\n\t\t* Misslotting an ancilla to any \"slot\" higher than 9, or less than 0 (not currently possible)\r\n\t\t* Any ancilla created must have its ID written to an address between $7E0C4A and $7E0C53, inclusive.\r\n\t* EG2 Out of Bounds Writes\r\n\t\t* Transferring room data to room IDs on the secondary underworld map (EG2), besides those belonging to properly defined rooms\r\n\t\t* Specifically, having your room ID become any value in the range $128 and $1FF, inclusive, by any means, is banned.",
+                  "flags": {
+                    "miscellaneous": false
+                  }
+                },
+                "21dv5k51": {
+                  "label": "100%",
+                  "rules": "-------------------------\r\nCATEGORY RULES\r\n-------------------------\r\n\r\n1) Timing starts on file select and ends upon entering the Triforce room.\r\n\r\n2) Full inventory with all maximum level items, 20 hearts, and 1/2 magic is required. Intermediary items and bomb/arrow capacity upgrades are not required.\r\n\r\n3) All bosses must be defeated. This means all bosses at the end of a dungeon which drop a heart container, both Agahnim fights, and Ganon.\r\n\r\n4) Collecting all of the pendants and crystals is required. This can be done by any means.\r\n\r\n5) All 24 unique Heart Pieces must be collected.\r\n\r\n***PLEASE RESET AND SHOW YOUR MENU + 4 BOTTLES AFTER THE CREDITS!***\r\n\r\nThis is not a hard requirement, but will greatly assist us in verifying your run, thank you!\r\n\r\n-------------------------\r\nMAJOR GLITCHES\r\n-------------------------\r\n\r\nThis ruleset is meant to be very unrestrictive to allow use of most glitches. However, a few things which are extremely powerful are banned, so as not to remove too much actual gameplay from speedruns.\r\n \r\nThe following techniques are **BANNED** in MG categories:\r\n* Arbitrary Code Execution\r\n\t* Causing the game to execute values from memory as code/instructions.\r\n* Arbitrary Memory Writes\r\n\t* Out of Bounds Misslotting:\r\n\t\t* Misslotting an ancilla to any \"slot\" higher than 9, or less than 0 (not currently possible)\r\n\t\t* Any ancilla created must have its ID written to an address between $7E0C4A and $7E0C53, inclusive.\r\n\t* EG2 Out of Bounds Writes\r\n\t\t* Transferring room data to room IDs on the secondary underworld map (EG2), besides those belonging to properly defined rooms\r\n\t\t* Specifically, having your room ID become any value in the range $128 and $1FF, inclusive, by any means, is banned.",
+                  "flags": {
+                    "miscellaneous": false
+                  }
+                },
+                "rqv6ekrl": {
+                  "label": "All Bosses (No EG)",
+                  "rules": "-------------------------\r\nCATEGORY RULES\r\n-------------------------\r\n\r\n1) Timing starts on file select and ends upon entering the Triforce room.\r\n\r\n2) This category bans:\r\n* Underworld EG\r\n* Plaid World\r\n* Underworld Swim Slope Clipping\r\n\r\n3) All bosses must be defeated. This means all bosses at the end of a dungeon which drop a heart container, both Agahnim fights, and Ganon.\r\n\r\n4) Collecting all of the pendants and crystals is required. This can be done by any means.\r\n\r\n5) An input display is preferred but not required.\r\n\r\n-------------------------\r\nMAJOR GLITCHES\r\n-------------------------\r\n\r\nThis ruleset is meant to be very unrestrictive to allow use of most glitches. However, a few things which are extremely powerful are banned, so as not to remove too much actual gameplay from speedruns.\r\n \r\nThe following techniques are **BANNED** in MG categories:\r\n* Arbitrary Code Execution\r\n\t* Causing the game to execute values from memory as code/instructions.\r\n* Arbitrary Memory Writes\r\n\t* Out of Bounds Misslotting:\r\n\t\t* Misslotting an ancilla to any \"slot\" higher than 9, or less than 0 (not currently possible)\r\n\t\t* Any ancilla created must have its ID written to an address between $7E0C4A and $7E0C53, inclusive.\r\n\t* EG2 Out of Bounds Writes\r\n\t\t* Transferring room data to room IDs on the secondary underworld map (EG2), besides those belonging to properly defined rooms\r\n\t\t* Specifically, having your room ID become any value in the range $128 and $1FF, inclusive, by any means, is banned.",
+                  "flags": {
+                    "miscellaneous": false
+                  }
+                },
+                "p129ogdl": {
+                  "label": "Any%",
+                  "rules": "-------------------------\r\nCATEGORY RULES\r\n-------------------------\r\n\r\n1) Timing starts on file select and ends upon entering the Triforce room.\r\n\r\n2) An input display is required if you play on emulator and your run claims to be in the top 20%\r\n\r\n-------------------------\r\nMAJOR GLITCHES\r\n-------------------------\r\n\r\nThis ruleset is meant to be very unrestrictive to allow use of most glitches. However, a few things which are extremely powerful are banned, so as not to remove too much actual gameplay from speedruns.\r\n \r\nThe following techniques are **BANNED** in MG categories:\r\n* Arbitrary Code Execution\r\n\t* Causing the game to execute values from memory as code/instructions.\r\n* Arbitrary Memory Writes\r\n\t* Out of Bounds Misslotting:\r\n\t\t* Misslotting an ancilla to any \"slot\" higher than 9, or less than 0 (not currently possible)\r\n\t\t* Any ancilla created must have its ID written to an address between $7E0C4A and $7E0C53, inclusive.\r\n\t* EG2 Out of Bounds Writes\r\n\t\t* Transferring room data to room IDs on the secondary underworld map (EG2), besides those belonging to properly defined rooms\r\n\t\t* Specifically, having your room ID become any value in the range $128 and $1FF, inclusive, by any means, is banned.",
+                  "flags": {
+                    "miscellaneous": false
+                  }
+                }
+              },
+              "default": "klrxj8ol"
+            },
+            "is-subcategory": true,
+            "links": [
+              {
+                "rel": "self",
+                "uri": "https://www.speedrun.com/api/v1/variables/68kzoq82"
+              },
+              {
+                "rel": "game",
+                "uri": "https://www.speedrun.com/api/v1/games/9d3rr0dl"
+              },
+              {
+                "rel": "category",
+                "uri": "https://www.speedrun.com/api/v1/categories/n2y180m2"
+              }
+            ]
+          },
+          {
+            "id": "rn1wzdlj",
+            "name": "Blue Balls",
+            "category": null,
+            "scope": {
+              "type": "full-game"
+            },
+            "mandatory": true,
+            "user-defined": false,
+            "obsoletes": true,
+            "values": {
+              "_note": "`choices` is deprecated, please use `values` instead",
+              "choices": {
+                "gq7298p1": "-",
+                "810604o1": "0",
+                "9qj2w371": "1",
+                "jq6vydv1": "2",
+                "5lm2858q": "3",
+                "81w7eymq": "4",
+                "zqojm451": "5",
+                "013xwgr1": "6",
+                "rqvx68rl": "7",
+                "5len3jml": "8",
+                "0q54xr7l": "9",
+                "4lxg0n3q": "10",
+                "8149kzeq": "11",
+                "z19x5ny1": "12",
+                "p129o7dl": "13",
+                "81pe49vl": "14",
+                "xqko9vd1": "15"
+              },
+              "values": {
+                "gq7298p1": {
+                  "label": "-"
+                },
+                "810604o1": {
+                  "label": "0"
+                },
+                "9qj2w371": {
+                  "label": "1"
+                },
+                "jq6vydv1": {
+                  "label": "2"
+                },
+                "5lm2858q": {
+                  "label": "3"
+                },
+                "81w7eymq": {
+                  "label": "4"
+                },
+                "zqojm451": {
+                  "label": "5"
+                },
+                "013xwgr1": {
+                  "label": "6"
+                },
+                "rqvx68rl": {
+                  "label": "7"
+                },
+                "5len3jml": {
+                  "label": "8"
+                },
+                "0q54xr7l": {
+                  "label": "9"
+                },
+                "4lxg0n3q": {
+                  "label": "10"
+                },
+                "8149kzeq": {
+                  "label": "11"
+                },
+                "z19x5ny1": {
+                  "label": "12"
+                },
+                "p129o7dl": {
+                  "label": "13"
+                },
+                "81pe49vl": {
+                  "label": "14"
+                },
+                "xqko9vd1": {
+                  "label": "15"
+                }
+              },
+              "default": null
+            },
+            "is-subcategory": false,
+            "links": [
+              {
+                "rel": "self",
+                "uri": "https://www.speedrun.com/api/v1/variables/rn1wzdlj"
+              },
+              {
+                "rel": "game",
+                "uri": "https://www.speedrun.com/api/v1/games/9d3rr0dl"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "jdz8nmvd",
+      "name": "Misc",
+      "weblink": "https://www.speedrun.com/alttp#Misc",
+      "type": "per-game",
+      "rules": "",
+      "players": {
+        "type": "exactly",
+        "value": 1
+      },
+      "miscellaneous": false,
+      "links": [
+        {
+          "rel": "self",
+          "uri": "https://www.speedrun.com/api/v1/categories/jdz8nmvd"
+        },
+        {
+          "rel": "game",
+          "uri": "https://www.speedrun.com/api/v1/games/9d3rr0dl"
+        },
+        {
+          "rel": "variables",
+          "uri": "https://www.speedrun.com/api/v1/categories/jdz8nmvd/variables"
+        },
+        {
+          "rel": "records",
+          "uri": "https://www.speedrun.com/api/v1/categories/jdz8nmvd/records"
+        },
+        {
+          "rel": "runs",
+          "uri": "https://www.speedrun.com/api/v1/runs?category=jdz8nmvd"
+        },
+        {
+          "rel": "leaderboard",
+          "uri": "https://www.speedrun.com/api/v1/leaderboards/9d3rr0dl/category/jdz8nmvd"
+        }
+      ],
+      "variables": {
+        "data": [
+          {
+            "id": "rn11g4pn",
+            "name": "Sub Category",
+            "category": "jdz8nmvd",
+            "scope": {
+              "type": "global"
+            },
+            "mandatory": true,
+            "user-defined": false,
+            "obsoletes": true,
+            "values": {
+              "_note": "`choices` is deprecated, please use `values` instead",
+              "choices": {
+                "8149kreq": "Mirror Shield",
+                "81we5vm1": "Cane of Byrna",
+                "z1958jyq": "Any% No OOB",
+                "rqvd68wq": "100% Item Completion",
+                "mlnvgk61": "Defeat Ganon (RAM Prep)"
+              },
+              "values": {
+                "8149kreq": {
+                  "label": "Mirror Shield",
+                  "rules": "**PLEASE ALSO READ THE GAME RULES**\r\n\r\n-------------------------\r\nCATEGORY RULES\r\n-------------------------\r\n\r\n1) Timing starts on file select and ends upon collecting the Mirror Shield.\r\n\r\n-------------------------\r\nNO MAJOR GLITCHES\r\n-------------------------\r\n\r\nThis category is meant to be played like an optimized casual playthrough, allowing some glitches and some sequence breaking.\r\n\r\nThe following techniques are **ALLOWED** in NMG categories:\r\n* Bomb Jumps\r\n* Silverless Ganon\r\n* Torch Glitch\r\n* Houlihan\r\n* Item Dashing\r\n* Superspeed (Armed & Active)\r\n\t* This includes pot and bottle spinspeed using underworld stairs\r\n* Somaria Bounce method is limited to RMG applications due to Somaria Bounce being RMG\r\n* Block Push Glitches (Hook/Fire Rod/Mirror)\r\n* Big Bomb Dupe\r\n* Big Bomb/Purple Chest Dashing\r\n* Interior Rail Clipping\r\n* Hovering\r\n* Fake Flippers\r\n* Waterwalk\r\n* Damage Overriding (i.e. Fire Rod Doubles)\r\n* Forcing Enemies Off Screen or Out of Bounds (Example)\r\n* Spooky Action at a Distance\r\n* Pit-based clipping (i.e. Hammeryump, Mire bomb jump, GT torches 1 pot)\r\n* Ancilla Overloading\r\n* Fake Items (Powder, Bow, Mirror, etc.)\r\n* Heart/Fairy Dupe\r\n* Slippery Stair Clip\r\n* Bonk Prize Pre-Grab\r\n* Boomerange\r\n* Bastard Door Early Item Drop\r\n* Medallion Cancel\r\n* Magic Cape Cheapskate\r\n* Magic Overflow\r\n* LSD Blind\r\n* Remote Purple Chest\r\n* Sanc & Quit\r\n* Prize on the Eyes\r\n* Bunny Glitches\r\n\t* Super Bunny\r\n\t* Surfing/Wriggling Bunny\r\n\t* Bunny Dungeon Revival\r\n\t* 0HP Dungeon Revival\r\n\t* Overworld Bunny Revival\r\n\t* Unbunny Beam\r\n\t* Bunny Pocket",
+                  "flags": {
+                    "miscellaneous": false
+                  }
+                },
+                "81we5vm1": {
+                  "label": "Cane of Byrna",
+                  "rules": "**PLEASE ALSO READ THE GAME RULES**\r\n\r\n-------------------------\r\nCATEGORY RULES\r\n-------------------------\r\n\r\n1) Timing starts on file select and ends upon collecting the Cane of Byrna.\r\n\r\n-------------------------\r\nNO MAJOR GLITCHES\r\n-------------------------\r\n\r\nThis category is meant to be played like an optimized casual playthrough, allowing some glitches and some sequence breaking.\r\n\r\nThe following techniques are **ALLOWED** in NMG categories:\r\n* Bomb Jumps\r\n* Silverless Ganon\r\n* Torch Glitch\r\n* Houlihan\r\n* Item Dashing\r\n* Superspeed (Armed & Active)\r\n\t* This includes pot and bottle spinspeed using underworld stairs\r\n* Somaria Bounce method is limited to RMG applications due to Somaria Bounce being RMG\r\n* Block Push Glitches (Hook/Fire Rod/Mirror)\r\n* Big Bomb Dupe\r\n* Big Bomb/Purple Chest Dashing\r\n* Interior Rail Clipping\r\n* Hovering\r\n* Fake Flippers\r\n* Waterwalk\r\n* Damage Overriding (i.e. Fire Rod Doubles)\r\n* Forcing Enemies Off Screen or Out of Bounds (Example)\r\n* Spooky Action at a Distance\r\n* Pit-based clipping (i.e. Hammeryump, Mire bomb jump, GT torches 1 pot)\r\n* Ancilla Overloading\r\n* Fake Items (Powder, Bow, Mirror, etc.)\r\n* Heart/Fairy Dupe\r\n* Slippery Stair Clip\r\n* Bonk Prize Pre-Grab\r\n* Boomerange\r\n* Bastard Door Early Item Drop\r\n* Medallion Cancel\r\n* Magic Cape Cheapskate\r\n* Magic Overflow\r\n* LSD Blind\r\n* Remote Purple Chest\r\n* Sanc & Quit\r\n* Prize on the Eyes\r\n* Bunny Glitches\r\n\t* Super Bunny\r\n\t* Surfing/Wriggling Bunny\r\n\t* Bunny Dungeon Revival\r\n\t* 0HP Dungeon Revival\r\n\t* Overworld Bunny Revival\r\n\t* Unbunny Beam\r\n\t* Bunny Pocket",
+                  "flags": {
+                    "miscellaneous": false
+                  }
+                },
+                "z1958jyq": {
+                  "label": "Any% No OOB",
+                  "rules": "**PLEASE ALSO READ THE GAME RULES**\r\n\r\n-------------------------\r\nCATEGORY RULES\r\n-------------------------\r\n\r\n1) For this category, Overworld YBAs are allowed. Underworld YBA's are also allowed for performing a Fake Flute. Transitioning off the landing screen is banned.\r\n\r\n2) Timing starts on file select and ends upon entering the Triforce room.\r\n\r\n3) Saving and quitting (S&Q) and intentionally dying to emulate a S&Q are allowed.\r\n\r\n4) An input display is preferred but not required.\r\n\r\n-------------------------\r\nNO MAJOR GLITCHES\r\n-------------------------\r\n\r\nThis category is meant to be played like an optimized casual playthrough, allowing some glitches and some sequence breaking.\r\n\r\nThe following techniques are **ALLOWED** in NMG categories:\r\n* Bomb Jumps\r\n* Silverless Ganon\r\n* Torch Glitch\r\n* Houlihan\r\n* Item Dashing\r\n* Superspeed (Armed & Active)\r\n\t* This includes pot and bottle spinspeed using underworld stairs\r\n* Somaria Bounce method is limited to RMG applications due to Somaria Bounce being RMG\r\n* Block Push Glitches (Hook/Fire Rod/Mirror)\r\n* Big Bomb Dupe\r\n* Big Bomb/Purple Chest Dashing\r\n* Interior Rail Clipping\r\n* Hovering\r\n* Fake Flippers\r\n* Waterwalk\r\n* Damage Overriding (i.e. Fire Rod Doubles)\r\n* Forcing Enemies Off Screen or Out of Bounds (Example)\r\n* Spooky Action at a Distance\r\n* Pit-based clipping (i.e. Hammeryump, Mire bomb jump, GT torches 1 pot)\r\n* Ancilla Overloading\r\n* Fake Items (Powder, Bow, Mirror, etc.)\r\n* Heart/Fairy Dupe\r\n* Slippery Stair Clip\r\n* Bonk Prize Pre-Grab\r\n* Boomerange\r\n* Bastard Door Early Item Drop\r\n* Medallion Cancel\r\n* Magic Cape Cheapskate\r\n* Magic Overflow\r\n* LSD Blind\r\n* Remote Purple Chest\r\n* Sanc & Quit\r\n* Prize on the Eyes\r\n* Bunny Glitches\r\n\t* Super Bunny\r\n\t* Surfing/Wriggling Bunny\r\n\t* Bunny Dungeon Revival\r\n\t* 0HP Dungeon Revival\r\n\t* Overworld Bunny Revival\r\n\t* Unbunny Beam\r\n\t* Bunny Pocket",
+                  "flags": {
+                    "miscellaneous": false
+                  }
+                },
+                "rqvd68wq": {
+                  "label": "100% Item Completion",
+                  "rules": "**PLEASE ALSO READ THE GAME RULES**\r\n\r\n-------------------------\r\nCATEGORY RULES\r\n-------------------------\r\n\r\n1) Timing starts on file select and ends upon entering the Triforce room.\r\n\r\n2) This requires a full inventory with 20 hearts and 1/2 magic, all compasses, maps, big keys, and items (even those surpassed by a later upgrade) collected. Bomb and Arrow capacities must be upgraded to their maximum. Blue boomerang, blue mail, and red shield must be obtained.\r\n\r\n***PLEASE RESET AND SHOW YOUR MENU + 4 BOTTLES AFTER THE CREDITS!***\r\n\r\nThis is not a hard requirement, but will greatly assist us in verifying your run, thank you!\r\n\r\n-------------------------\r\nNO MAJOR GLITCHES\r\n-------------------------\r\n\r\nThis category is meant to be played like an optimized casual playthrough, allowing some glitches and some sequence breaking.\r\n\r\nThe following techniques are **ALLOWED** in NMG categories:\r\n* Bomb Jumps\r\n* Silverless Ganon\r\n* Torch Glitch\r\n* Houlihan\r\n* Item Dashing\r\n* Superspeed (Armed & Active)\r\n\t* This includes pot and bottle spinspeed using underworld stairs\r\n* Somaria Bounce method is limited to RMG applications due to Somaria Bounce being RMG\r\n* Block Push Glitches (Hook/Fire Rod/Mirror)\r\n* Big Bomb Dupe\r\n* Big Bomb/Purple Chest Dashing\r\n* Interior Rail Clipping\r\n* Hovering\r\n* Fake Flippers\r\n* Waterwalk\r\n* Damage Overriding (i.e. Fire Rod Doubles)\r\n* Forcing Enemies Off Screen or Out of Bounds (Example)\r\n* Spooky Action at a Distance\r\n* Pit-based clipping (i.e. Hammeryump, Mire bomb jump, GT torches 1 pot)\r\n* Ancilla Overloading\r\n* Fake Items (Powder, Bow, Mirror, etc.)\r\n* Heart/Fairy Dupe\r\n* Slippery Stair Clip\r\n* Bonk Prize Pre-Grab\r\n* Boomerange\r\n* Bastard Door Early Item Drop\r\n* Medallion Cancel\r\n* Magic Cape Cheapskate\r\n* Magic Overflow\r\n* LSD Blind\r\n* Remote Purple Chest\r\n* Sanc & Quit\r\n* Prize on the Eyes\r\n* Bunny Glitches\r\n\t* Super Bunny\r\n\t* Surfing/Wriggling Bunny\r\n\t* Bunny Dungeon Revival\r\n\t* 0HP Dungeon Revival\r\n\t* Overworld Bunny Revival\r\n\t* Unbunny Beam\r\n\t* Bunny Pocket",
+                  "flags": {
+                    "miscellaneous": false
+                  }
+                },
+                "mlnvgk61": {
+                  "label": "Defeat Ganon (RAM Prep)",
+                  "rules": "**PLEASE ALSO READ THE GAME RULES**\r\n\r\n-------------------------\r\nCATEGORY RULES\r\n-------------------------\r\n\r\n1) RAM Preparation is allowed, and therefore, starting the run WITHOUT a hard/soft reset is also allowed.\r\n\r\n2) Timing starts on file select and ends upon entering the Triforce room.\r\n\r\n3) An input display is preferred but not required.\r\n\r\n-------------------------\r\nMAJOR GLITCHES\r\n-------------------------\r\n\r\nThis ruleset is meant to be very unrestrictive to allow use of most glitches. However, a few things which are extremely powerful are banned, so as not to remove too much actual gameplay from speedruns.\r\n \r\nThe following techniques are **BANNED** in MG categories:\r\n* Arbitrary Code Execution\r\n\t* Causing the game to execute values from memory as code/instructions.\r\n* Arbitrary Memory Writes\r\n\t* Out of Bounds Misslotting:\r\n\t\t* Misslotting an ancilla to any \"slot\" higher than 9, or less than 0 (not currently possible)\r\n\t\t* Any ancilla created must have its ID written to an address between $7E0C4A and $7E0C53, inclusive.\r\n\t* EG2 Out of Bounds Writes\r\n\t\t* Transferring room data to room IDs on the secondary underworld map (EG2), besides those belonging to properly defined rooms\r\n\t\t* Specifically, having your room ID become any value in the range $128 and $1FF, inclusive, by any means, is banned.",
+                  "flags": {
+                    "miscellaneous": false
+                  }
+                }
+              },
+              "default": "8149kreq"
+            },
+            "is-subcategory": true,
+            "links": [
+              {
+                "rel": "self",
+                "uri": "https://www.speedrun.com/api/v1/variables/rn11g4pn"
+              },
+              {
+                "rel": "game",
+                "uri": "https://www.speedrun.com/api/v1/games/9d3rr0dl"
+              },
+              {
+                "rel": "category",
+                "uri": "https://www.speedrun.com/api/v1/categories/jdz8nmvd"
+              }
+            ]
+          },
+          {
+            "id": "rn1wzdlj",
+            "name": "Blue Balls",
+            "category": null,
+            "scope": {
+              "type": "full-game"
+            },
+            "mandatory": true,
+            "user-defined": false,
+            "obsoletes": true,
+            "values": {
+              "_note": "`choices` is deprecated, please use `values` instead",
+              "choices": {
+                "gq7298p1": "-",
+                "810604o1": "0",
+                "9qj2w371": "1",
+                "jq6vydv1": "2",
+                "5lm2858q": "3",
+                "81w7eymq": "4",
+                "zqojm451": "5",
+                "013xwgr1": "6",
+                "rqvx68rl": "7",
+                "5len3jml": "8",
+                "0q54xr7l": "9",
+                "4lxg0n3q": "10",
+                "8149kzeq": "11",
+                "z19x5ny1": "12",
+                "p129o7dl": "13",
+                "81pe49vl": "14",
+                "xqko9vd1": "15"
+              },
+              "values": {
+                "gq7298p1": {
+                  "label": "-"
+                },
+                "810604o1": {
+                  "label": "0"
+                },
+                "9qj2w371": {
+                  "label": "1"
+                },
+                "jq6vydv1": {
+                  "label": "2"
+                },
+                "5lm2858q": {
+                  "label": "3"
+                },
+                "81w7eymq": {
+                  "label": "4"
+                },
+                "zqojm451": {
+                  "label": "5"
+                },
+                "013xwgr1": {
+                  "label": "6"
+                },
+                "rqvx68rl": {
+                  "label": "7"
+                },
+                "5len3jml": {
+                  "label": "8"
+                },
+                "0q54xr7l": {
+                  "label": "9"
+                },
+                "4lxg0n3q": {
+                  "label": "10"
+                },
+                "8149kzeq": {
+                  "label": "11"
+                },
+                "z19x5ny1": {
+                  "label": "12"
+                },
+                "p129o7dl": {
+                  "label": "13"
+                },
+                "81pe49vl": {
+                  "label": "14"
+                },
+                "xqko9vd1": {
+                  "label": "15"
+                }
+              },
+              "default": null
+            },
+            "is-subcategory": false,
+            "links": [
+              {
+                "rel": "self",
+                "uri": "https://www.speedrun.com/api/v1/variables/rn1wzdlj"
+              },
+              {
+                "rel": "game",
+                "uri": "https://www.speedrun.com/api/v1/games/9d3rr0dl"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}
