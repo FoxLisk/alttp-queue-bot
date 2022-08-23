@@ -1,0 +1,12 @@
+[Unit]
+Description=ALttP Queue Bot
+
+[Service]
+StandardOutput=append:/var/log/alttp-queue-bot.log
+StandardError=append:/var/log/alttp-queue-bot.log
+WorkingDirectory=/opt/efs/alttp-queue-bot
+ExecStart=/opt/efs/alttp-queue-bot/target/debug/alttp-queue-bot
+KillSignal=SIGINT
+
+[Install]
+WantedBy=multi-user.target
