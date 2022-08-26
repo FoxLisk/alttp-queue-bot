@@ -237,12 +237,12 @@ async fn create_run_thread(
         return Ok(None)
     }
     let thread_title = format!(
-        "{} in {} by {}",
+        "{}: {} in {}",
+        src_run.player().unwrap_or("Unknown player"),
         categories
             .category_name(src_run)
             .unwrap_or("Unknown category".to_string()),
         format_hms(src_run.times.primary_t),
-        src_run.player().unwrap_or("Unknown player")
     );
 
     discord_client
