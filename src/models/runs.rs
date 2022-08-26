@@ -1,7 +1,7 @@
 use diesel::prelude::*;
-// use diesel::query_builder::AsChangeset;
 use diesel_enum_derive::DieselEnum;
 use crate::schema::runs;
+
 
 #[derive(Debug, PartialEq, DieselEnum)]
 pub enum RunState {
@@ -19,7 +19,7 @@ pub struct Run {
     pub thread_id: Option<String>,
     #[diesel(deserialize_as=String)]
     pub state: RunState,
-    /// the run's id according to srdc
+    /// the run's SRC id
     pub run_id: String,
 }
 

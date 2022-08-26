@@ -47,7 +47,7 @@ mod tests {
     #[test]
     fn test_format() {
         let secs = 45 + (60 * 23) + (60 * 60);
-        assert_eq!("1:23:45", format_hms(secs as f64));
-        assert_eq!("1:23:45.67", format_hms(secs as f64 + 0.67));
+        assert_eq!("1h23m45s", format_hms(secs as f64));
+        assert_eq!("1h23m45.67s", format_hms(secs as f64 + 0.67));
     }
 }

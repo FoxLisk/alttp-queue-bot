@@ -12,3 +12,15 @@ this will generate an url LIKE
 
 https://discord.com/api/oauth2/authorize?client_id=1010729369121083563&permissions=34359738368&scope=bot
 
+# how to ORM
+
+```
+diesel migration generate <migration name>
+
+... write sql ...
+
+diesel migration run
+
+# probably good to test it
+diesel migration redo
+```

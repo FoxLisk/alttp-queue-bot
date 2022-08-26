@@ -1,4 +1,11 @@
-use diesel::table;
+table! {
+    category_aliases (id) {
+        id -> Integer,
+        game_src_id -> Text,
+        category_src_id -> Text,
+        alias -> Text,
+    }
+}
 
 table! {
     runs (id) {
@@ -9,3 +16,8 @@ table! {
         run_id -> Text,
     }
 }
+
+allow_tables_to_appear_in_same_query!(
+    category_aliases,
+    runs,
+);
