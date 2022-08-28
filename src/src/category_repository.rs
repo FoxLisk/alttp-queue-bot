@@ -1,5 +1,6 @@
 use std::collections::HashMap;
 use diesel::SqliteConnection;
+use diesel::prelude::*;
 use speedrun_api::api::categories::CategoryId;
 use speedrun_api::api::games::GameId;
 use speedrun_api::api::variables::{ValueId, VariableId};
@@ -34,7 +35,7 @@ impl<'a> CategoriesRepository<'a> {
     ) -> Result<CategoriesRepository<'b>, BotError> {
         let gid = game_id.into();
         let categories = get_categories(gid.clone(), src_client).await?;
-        let aliases = CategoryAlias::by_game_id(&gid.to_string(), conn)?;
+        let aliases = CategoryAlias::by_game_id(&gid.to_string()).load(conn)?;
         Ok(CategoriesRepository::new(categories, aliases))
     }
 
