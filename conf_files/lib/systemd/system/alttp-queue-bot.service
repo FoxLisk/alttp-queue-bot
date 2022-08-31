@@ -5,7 +5,7 @@ Description=ALttP Queue Bot
 StandardOutput=append:/var/log/alttp-queue-bot.log
 StandardError=append:/var/log/alttp-queue-bot.log
 WorkingDirectory=/opt/efs/alttp-queue-bot
-ExecStart=/opt/efs/alttp-queue-bot/target/debug/alttp-queue-bot
+ExecStart=/opt/efs/alttp-queue-bot/target/debug/bot
 KillSignal=SIGINT
 
 [Install]
