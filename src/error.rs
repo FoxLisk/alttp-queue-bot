@@ -1,8 +1,8 @@
-use std::env::VarError;
-use std::num::ParseIntError;
-use diesel::result::Error;
 use crate::discord_client::DiscordError;
 use crate::src::SRCError;
+use diesel::result::Error;
+use std::env::VarError;
+use std::num::ParseIntError;
 
 #[derive(Debug)]
 pub enum BotError {

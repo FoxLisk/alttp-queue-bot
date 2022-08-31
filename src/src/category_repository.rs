@@ -1,13 +1,13 @@
-use std::collections::HashMap;
-use diesel::SqliteConnection;
+use crate::error::BotError;
+use crate::models::aliases::CategoryAlias;
+use crate::src::{get_categories, Category, SRCRun, Value};
 use diesel::prelude::*;
+use diesel::SqliteConnection;
 use speedrun_api::api::categories::CategoryId;
 use speedrun_api::api::games::GameId;
 use speedrun_api::api::variables::{ValueId, VariableId};
 use speedrun_api::SpeedrunApiClientAsync;
-use crate::error::BotError;
-use crate::models::aliases::CategoryAlias;
-use crate::src::{Category, get_categories, SRCRun, Value};
+use std::collections::HashMap;
 
 // i think this is kind of a bastardization of the ~*~Design Pattern~*~ Repository
 pub struct CategoriesRepository<'a> {
@@ -23,7 +23,11 @@ impl<'a> CategoriesRepository<'a> {
     pub fn new(categories: Vec<Category<'a>>, aliases: Vec<CategoryAlias>) -> Self {
         Self {
             categories: HashMap::from_iter(categories.into_iter().map(|c| (c.id.clone(), c))),
-            aliases: HashMap::from_iter(aliases.into_iter().map(|a| (a.category_src_id.into(), a.alias)))
+            aliases: HashMap::from_iter(
+                aliases
+                    .into_iter()
+                    .map(|a| (a.category_src_id.into(), a.alias)),
+            ),
         }
     }
 
@@ -31,7 +35,7 @@ impl<'a> CategoriesRepository<'a> {
     pub async fn new_with_fetch<'b, GID: Into<GameId<'a>>>(
         game_id: GID,
         src_client: &'b SpeedrunApiClientAsync,
-        conn: &mut SqliteConnection
+        conn: &mut SqliteConnection,
     ) -> Result<CategoriesRepository<'b>, BotError> {
         let gid = game_id.into();
         let categories = get_categories(gid.clone(), src_client).await?;
@@ -98,19 +102,19 @@ mod tests {
         let known_cat = Category {
             id: "asdf".into(),
             name: "my coool category".to_string(),
-            variables: Default::default()
+            variables: Default::default(),
         };
         let unknown_cat = Category {
             id: "lolz".into(),
             name: "oh noes".to_string(),
-            variables: Default::default()
+            variables: Default::default(),
         };
 
         let alias = CategoryAlias {
             id: 0,
             game_src_id: "irrelevant".to_string(),
             category_src_id: "asdf".to_string(),
-            alias: "even cooler alias!".to_string()
+            alias: "even cooler alias!".to_string(),
         };
 
         let cr = CategoriesRepository::new(vec![known_cat.clone()], vec![alias]);

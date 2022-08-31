@@ -1,18 +1,18 @@
-use std::env;
-use std::num::{NonZeroU64};
-use std::ops::Deref;
-use std::time::Duration;
-use dashmap::DashMap;
-use tokio::time::Instant;
-use twilight_http::Client;
-use twilight_http::response::{DeserializeBodyError, HeaderIter};
-use twilight_model::channel::{Channel, ChannelType};
-use twilight_model::guild::NSFWLevel::Default;
-use twilight_model::id::Id;
-use twilight_model::id::marker::{ApplicationMarker, ChannelMarker};
-use crate::{utils::secs_to_millis};
 use crate::error::BotError;
 use crate::utils::env_var;
+use crate::utils::secs_to_millis;
+use dashmap::DashMap;
+use std::env;
+use std::num::NonZeroU64;
+use std::ops::Deref;
+use std::time::Duration;
+use tokio::time::Instant;
+use twilight_http::response::{DeserializeBodyError, HeaderIter};
+use twilight_http::Client;
+use twilight_model::channel::{Channel, ChannelType};
+use twilight_model::guild::NSFWLevel::Default;
+use twilight_model::id::marker::{ApplicationMarker, ChannelMarker};
+use twilight_model::id::Id;
 
 struct Fetched<T> {
     item: T,
@@ -32,7 +32,7 @@ impl<T> Fetched<T> {
     fn new(item: T) -> Self {
         Self {
             item,
-            fetched: Instant::now()
+            fetched: Instant::now(),
         }
     }
 
@@ -49,7 +49,6 @@ pub struct BotDiscordClient {
     channels: DashMap<Id<ChannelMarker>, Fetched<Channel>>,
     channel_info_ttl: Duration,
 }
-
 
 #[derive(Debug)]
 pub enum DiscordError {
@@ -160,47 +159,47 @@ impl BotDiscordClient {
             application_id,
             channel_id,
             channels: DashMap::new(),
-            channel_info_ttl
+            channel_info_ttl,
         })
     }
 
     async fn fetch_channel(&self, id: Id<ChannelMarker>) -> Result<Channel, DiscordError> {
-        let resp = self.client
-            .channel(id)
-            .exec()
-            .await?;
+        let resp = self.client.channel(id).exec().await?;
         Ok(resp.model().await?)
     }
 
     async fn channel<F, O>(&self, id: Id<ChannelMarker>, fn_: F) -> Result<O, DiscordError>
-        where F: FnOnce(&Channel) -> O
+    where
+        F: FnOnce(&Channel) -> O,
     {
-        match self.channels.get_mut(&id) {
+        let res = match self.channels.get_mut(&id) {
             Some(mut f) => {
                 if f.is_expired(&self.channel_info_ttl) {
                     let c = self.fetch_channel(id.clone()).await?;
+                    let out = fn_(&c);
                     f.replace(c);
                 }
-                Ok(fn_(f.get()))
-            },
+                out
+            }
             None => {
                 let c = self.fetch_channel(id.clone()).await?;
-                let res = fn_(&c);
+                let out = fn_(&c);
                 let f = Fetched::new(c);
                 self.channels.insert(id.clone(), f);
-                Ok(res)
-            },
-        }
+                out
+            }
+        };
+        Ok(res)
     }
 
     pub async fn create_thread(
         &self,
         thread_name: &str,
     ) -> Result<(Option<RateLimitInfo>, Channel), DiscordError> {
-        let archive_duration = self.channel(
-            self.channel_id.clone(),
-            |c| c.default_auto_archive_duration
-        ).await.unwrap_or(None);
+        let archive_duration = self
+            .channel(self.channel_id.clone(), |c| c.default_auto_archive_duration)
+            .await
+            .unwrap_or(None);
         let mut req = self
             .client
             .create_thread(
@@ -212,8 +211,7 @@ impl BotDiscordClient {
         if let Some(ad) = archive_duration {
             req = req.auto_archive_duration(ad);
         }
-        let resp = req.exec()
-            .await?;
+        let resp = req.exec().await?;
         let rli = RateLimitInfo::from_headers(resp.headers());
         let channel = resp.model().await?;
         Ok((rli, channel))

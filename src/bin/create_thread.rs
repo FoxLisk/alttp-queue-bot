@@ -1,7 +1,7 @@
+use alttp_queue_bot::discord_client::BotDiscordClient;
 use std::time::Duration;
 use twilight_http::request::TryIntoRequest;
 use twilight_model::channel::ChannelType;
-use alttp_queue_bot::discord_client::BotDiscordClient;
 
 #[tokio::main]
 async fn main() {

@@ -6,23 +6,22 @@ extern crate speedrun_api;
 
 use diesel::prelude::*;
 use diesel::{Connection, SqliteConnection};
-use diesel_migrations::{MigrationHarness};
+use diesel_migrations::MigrationHarness;
 use std::collections::HashMap;
-use std::num::{NonZeroU64};
+use std::num::NonZeroU64;
 use std::time::Duration;
 
+use alttp_queue_bot::discord_client::{BotDiscordClient, DiscordError, RateLimitInfo};
+use alttp_queue_bot::models::runs::RunState::ThreadCreated;
+use alttp_queue_bot::models::runs::{NewRun, Run, RunState, UpdateRun};
+use alttp_queue_bot::src::{get_runs, CategoriesRepository, SRCRun};
+use alttp_queue_bot::utils::{env_var, format_hms, secs_to_millis};
+use alttp_queue_bot::{error::*, schema, ALTTP_GAME_ID};
 use speedrun_api::SpeedrunApiClientAsync;
 use twilight_http::api_error::{ApiError, RatelimitedApiError};
 use twilight_http::error::ErrorType;
-use twilight_model::id::marker::{ChannelMarker};
+use twilight_model::id::marker::ChannelMarker;
 use twilight_model::id::Id;
-use alttp_queue_bot::{ALTTP_GAME_ID, error::*, schema};
-use alttp_queue_bot::discord_client::{BotDiscordClient, DiscordError, RateLimitInfo};
-use alttp_queue_bot::models::runs::{NewRun, Run, RunState, UpdateRun};
-use alttp_queue_bot::models::runs::RunState::ThreadCreated;
-use alttp_queue_bot::src::{CategoriesRepository, get_runs, SRCRun};
-use alttp_queue_bot::utils::{env_var, format_hms, secs_to_millis};
-
 
 /// mutates `db_run` in place
 async fn create_run_thread(
@@ -176,8 +175,7 @@ async fn main() {
     let mut diesel_conn =
         SqliteConnection::establish(&database_url).expect("Unable to connect to database");
 
-    let migrations = diesel_migrations::FileBasedMigrations::find_migrations_directory()
-        .unwrap();
+    let migrations = diesel_migrations::FileBasedMigrations::find_migrations_directory().unwrap();
     diesel_conn.run_pending_migrations(migrations).unwrap();
 
     let cr = CategoriesRepository::new_with_fetch(ALTTP_GAME_ID, &src_client, &mut diesel_conn)
