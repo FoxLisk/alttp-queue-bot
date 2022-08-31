@@ -5,9 +5,9 @@ use speedrun_api::api::categories::CategoryId;
 use speedrun_api::api::games::GameId;
 use speedrun_api::api::variables::{ValueId, VariableId};
 use speedrun_api::SpeedrunApiClientAsync;
-use crate::{BotError, SRCRun};
+use crate::error::BotError;
 use crate::models::aliases::CategoryAlias;
-use crate::src::{Category, get_categories, Value};
+use crate::src::{Category, get_categories, SRCRun, Value};
 
 // i think this is kind of a bastardization of the ~*~Design Pattern~*~ Repository
 pub struct CategoriesRepository<'a> {
@@ -90,7 +90,6 @@ impl<'a> CategoriesRepository<'a> {
 }
 
 mod tests {
-    use crate::CategoriesRepository;
     use crate::models::aliases::CategoryAlias;
     use crate::src::Category;
 

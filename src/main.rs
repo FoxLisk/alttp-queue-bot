@@ -5,75 +5,24 @@ extern crate serde_json;
 extern crate speedrun_api;
 
 use diesel::prelude::*;
-use diesel::result::Error;
 use diesel::{Connection, SqliteConnection};
 use diesel_migrations::{MigrationHarness};
 use std::collections::HashMap;
-use std::env::VarError;
-use std::fmt::Debug;
-use std::num::{NonZeroU64, ParseIntError};
+use std::num::{NonZeroU64};
 use std::time::Duration;
 
-use crate::models::runs::RunState::ThreadCreated;
-use crate::models::runs::{NewRun, Run, RunState, UpdateRun};
 use speedrun_api::SpeedrunApiClientAsync;
 use twilight_http::api_error::{ApiError, RatelimitedApiError};
 use twilight_http::error::ErrorType;
 use twilight_model::id::marker::{ChannelMarker};
 use twilight_model::id::Id;
-use crate::discord_client::{BotDiscordClient, DiscordError, RateLimitInfo};
+use alttp_queue_bot::{ALTTP_GAME_ID, error::*, schema};
+use alttp_queue_bot::discord_client::{BotDiscordClient, DiscordError, RateLimitInfo};
+use alttp_queue_bot::models::runs::{NewRun, Run, RunState, UpdateRun};
+use alttp_queue_bot::models::runs::RunState::ThreadCreated;
+use alttp_queue_bot::src::{CategoriesRepository, get_runs, SRCRun};
+use alttp_queue_bot::utils::{env_var, format_hms, secs_to_millis};
 
-use crate::src::{get_runs, CategoriesRepository, SRCError, SRCRun};
-use crate::utils::{env_var, format_hms, secs_to_millis};
-
-mod models;
-mod schema;
-mod src;
-mod utils;
-mod discord_client;
-
-const ALTTP_GAME_ID: &str = "9d3rr0dl";
-
-
-#[derive(Debug)]
-pub enum BotError {
-    VariableMissing(VarError),
-    VariableParseError(ParseIntError),
-    DatabaseError(Error),
-    SRCError(SRCError),
-    DiscordError(DiscordError),
-    InvalidState(String),
-}
-
-impl From<VarError> for BotError {
-    fn from(ve: VarError) -> Self {
-        Self::VariableMissing(ve)
-    }
-}
-
-impl From<ParseIntError> for BotError {
-    fn from(pie: ParseIntError) -> Self {
-        Self::VariableParseError(pie)
-    }
-}
-
-impl From<Error> for BotError {
-    fn from(e: Error) -> Self {
-        Self::DatabaseError(e)
-    }
-}
-
-impl From<SRCError> for BotError {
-    fn from(e: SRCError) -> Self {
-        Self::SRCError(e)
-    }
-}
-
-impl From<DiscordError> for BotError {
-    fn from(e: DiscordError) -> Self {
-        Self::DiscordError(e)
-    }
-}
 
 /// mutates `db_run` in place
 async fn create_run_thread(

@@ -1,6 +1,7 @@
 mod category_repository;
 
 use crate::{ALTTP_GAME_ID};
+
 use futures_util::StreamExt;
 use serde::Deserialize;
 use speedrun_api::api;

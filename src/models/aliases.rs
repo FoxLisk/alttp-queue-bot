@@ -1,7 +1,6 @@
 use diesel::helper_types::{Eq, Filter};
 use diesel::internal::table_macro::FromClause;
 use diesel::prelude::*;
-use crate::ALTTP_GAME_ID;
 use crate::schema::category_aliases::dsl::*;
 
 #[derive(Queryable)]

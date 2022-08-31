@@ -3,6 +3,14 @@ name = "alttp-queue-bot"
 version = "0.1.0"
 edition = "2021"
 
+[lib]
+path = "src/lib.rs"
+
+[[bin]]
+name = "bot"
+path = "src/main.rs"
+
+
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
@@ -18,6 +26,7 @@ aliri_braid = "0.2.4"
 libsqlite3-sys = { version = "=0.24.2", features = ["bundled"]}
 diesel = { version = "2.0.0-rc.1", features = ["sqlite", "returning_clauses_for_sqlite_3_35"] }
 diesel_migrations = "2.0.0-rc.1"
+dashmap = "5.3.4"
 #speedrun-api = "1.1.1"
 
 [dependencies.speedrun-api]
