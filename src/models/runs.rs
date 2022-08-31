@@ -1,7 +1,6 @@
+use crate::schema::runs;
 use diesel::prelude::*;
 use diesel_enum_derive::DieselEnum;
-use crate::schema::runs;
-
 
 #[derive(Debug, PartialEq, DieselEnum)]
 pub enum RunState {
@@ -9,7 +8,6 @@ pub enum RunState {
     ThreadCreated,
     MessageCreated,
 }
-
 
 #[derive(Queryable, Identifiable)]
 pub struct Run {
@@ -23,9 +21,8 @@ pub struct Run {
     pub run_id: String,
 }
 
-
 #[derive(Identifiable, AsChangeset)]
-#[table_name="runs"]
+#[table_name = "runs"]
 // this is basically just because diesel hates enums
 pub struct UpdateRun {
     id: i32,
@@ -49,9 +46,8 @@ impl From<Run> for UpdateRun {
     }
 }
 
-
 #[derive(Insertable)]
-#[table_name="runs"]
+#[table_name = "runs"]
 pub struct NewRun<'a> {
     pub submitted: Option<&'a str>,
     pub thread_id: Option<String>,

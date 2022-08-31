@@ -1,4 +1,3 @@
-
 // lifted from league bot
 // i really need a way to stop copy-pasting code across projects
 // this is extended to handle fractions though
@@ -19,14 +18,10 @@ pub fn format_hms(secs: f64) -> String {
             "{hours}h{mins:02}m{secs}s",
             hours = hours,
             mins = mins % 60,
-            secs=secs_fmt
+            secs = secs_fmt
         )
     } else {
-        format!(
-            "{mins}m{secs}s",
-            mins = mins % 60,
-            secs=secs_fmt
-        )
+        format!("{mins}m{secs}s", mins = mins % 60, secs = secs_fmt)
     }
 }
 
@@ -40,9 +35,8 @@ pub fn env_var(key: &str) -> String {
     std::env::var(key).expect(&format!("Missing environment variable: `{}`", key))
 }
 
-
 mod tests {
-    use crate::utils::{format_hms,};
+    use crate::utils::format_hms;
 
     #[test]
     fn test_format() {
