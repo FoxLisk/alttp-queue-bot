@@ -153,7 +153,7 @@ impl BotDiscordClient {
             Id::<ApplicationMarker>::from(env::var("APPLICATION_ID")?.parse::<NonZeroU64>()?);
         let channel_id = Id::<ChannelMarker>::from(env::var("CHANNEL_ID")?.parse::<NonZeroU64>()?);
         let client = Client::new(token);
-        let channel_info_ttl = Duration::from_secs(env_var("CHANNEL_INFO_TTL").parse::<u64>()?);
+        let channel_info_ttl = Duration::from_secs(env_var("CHANNEL_INFO_TTL_SECS").parse::<u64>()?);
         Ok(Self {
             client,
             application_id,
@@ -176,10 +176,9 @@ impl BotDiscordClient {
             Some(mut f) => {
                 if f.is_expired(&self.channel_info_ttl) {
                     let c = self.fetch_channel(id.clone()).await?;
-                    let out = fn_(&c);
                     f.replace(c);
                 }
-                out
+                fn_(f.get())
             }
             None => {
                 let c = self.fetch_channel(id.clone()).await?;
