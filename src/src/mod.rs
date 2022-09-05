@@ -157,7 +157,6 @@ pub async fn get_run<'a, T: Into<RunId<'a>>>(src_client: &SpeedrunApiClientAsync
     let run_id = id.into();
     let gr = Run::builder().id(run_id).build()?;
     let o = gr.query_async(src_client).await;
-    println!("{:?}", o);
     o.map_err(Into::into)
 }
 
