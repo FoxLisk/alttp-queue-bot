@@ -7,7 +7,7 @@ use std::num::NonZeroU64;
 use std::time::Duration;
 use tokio::time::Instant;
 use twilight_http::response::{DeserializeBodyError, HeaderIter};
-use twilight_http::{Client, Error};
+use twilight_http::{Client, Error, Response};
 use twilight_http::error::ErrorType;
 use twilight_model::channel::{Channel, ChannelType};
 use twilight_model::id::marker::{ApplicationMarker, ChannelMarker};
@@ -177,6 +177,40 @@ impl<'b> RateLimitInfoBuilder<'b> {
     }
 }
 
+#[derive(Debug)]
+pub struct WithRateLimitInfo<T> {
+    rli: Option<RateLimitInfo>,
+    item: T,
+}
+
+impl<T> WithRateLimitInfo<T> {
+    fn new<R>(item: T, resp: &Response<R>) -> Self {
+        Self {
+            rli: RateLimitInfo::from_headers(resp.headers()),
+            item
+        }
+    }
+
+    fn new_no_rli(item: T) -> Self {
+        Self {
+            rli: None,
+            item
+        }
+    }
+
+    /// if we have rate limiting info, and we're out of requests, this returns the duration we
+    /// should sleep for
+    /// if we are missing info or have requests left, returns None (so None might be sort of a lie)
+    pub fn sleep_time(&self) -> Option<Duration> {
+        if let Some(rli) = &self.rli {
+            if rli.remaining == 0 {
+                return Some(Duration::from_millis(rli.reset_after_millis()))
+            }
+        }
+        None
+    }
+}
+
 impl BotDiscordClient {
     pub fn new_from_env() -> Result<Self, BotError> {
         let token = env::var("BOT_TOKEN")?;
@@ -252,25 +286,26 @@ impl BotDiscordClient {
 
     // no real reason for this to be char instead of str but it's convenient
     /// returns true if we did any work, false if the thread was already archived
-    pub async fn finalize_thread(&self, id: Id<ChannelMarker>, new_prefix: char) -> Result<bool, DiscordError> {
+    pub async fn finalize_thread(&self, id: Id<ChannelMarker>, new_prefix: char) -> Result<WithRateLimitInfo<bool>, DiscordError> {
         let existing_thread = self.fetch_channel(id).await?;
 
         if let Some(tmd) = existing_thread.thread_metadata {
             if tmd.archived {
-                return Ok(false);
+                return Ok(WithRateLimitInfo::new_no_rli(false));
             }
         } else {
             return Err(DiscordError::InvalidInput(InvalidInputError::ThatsNotAThread));
         }
         println!("Updating {:?}", existing_thread.name);
         // i dont know how thread name could be null? but apparently it can. discord api says so.
-        self.client.update_thread(id)
+        let resp = self.client.update_thread(id)
             .name(&format!("{} {}",new_prefix, existing_thread.name.unwrap_or("-".to_string())))
             .map_err(|e| DiscordError::ValidationError(e.to_string()))?
             .archived(true)
             .exec()
             .await?;
-        Ok(true)
+        let rli = RateLimitInfo::from_headers(resp.headers());
+        Ok(WithRateLimitInfo::new(true, &resp))
     }
 
     pub async fn create_message(

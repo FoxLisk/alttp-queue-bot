@@ -114,7 +114,7 @@ async fn handle_known_runs(
         let thread_id = match run.thread_id() {
             Ok(tid) => tid,
             Err(e) => {
-                println!("Error getting thread id for run {}: {:?}", run.id, e);
+                errors.push(format!("Error getting thread id for run {}: {:?}", run.id, e));
                 continue;
             }
         };
@@ -127,12 +127,17 @@ async fn handle_known_runs(
             .finalize_thread(thread_id, status.symbol())
             .await
         {
-            Ok(did) => {println!("did work? {:?}", did)}
+            Ok(did) => {
+                println!("did work? {:?}", did);
+                if let Some(sleep_time) = did.sleep_time() {
+                    tokio::time::sleep(sleep_time).await;
+                }
+            }
             Err(e) => {
-                println!("Error updating thread: {:?}", e);
                 if e.is_404() {
-                    println!("404 error - giving up and marking run complete");
+                    errors.push(format!("404 errorupdating thread for run {}: {:?}", run.id, e));
                 } else {
+                    errors.push(format!("Error updating thread for run {}: {:?}", run.id, e));
                     // if the error is anything but a 404 we keep the run in this state and expect
                     // to clean it up in a future sweep
                     continue;
