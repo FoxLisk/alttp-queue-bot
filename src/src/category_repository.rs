@@ -79,10 +79,10 @@ impl<'a> CategoriesRepository<'a> {
         self.aliases.get(&category.id).unwrap_or(&category.name)
     }
 
-    pub fn category_name(&self, run: &SRCRun) -> Option<String> {
-        let cat = self.categories.get(&run.category)?;
+    pub fn category_name(&self, category_id: &CategoryId<'_>, values: &HashMap<VariableId<'a>, ValueId<'a>>) -> Option<String> {
+        let cat = self.categories.get(category_id)?;
         let cat_name = self._category_nice_name(cat);
-        match self.subcategory_name(cat, &run.values) {
+        match self.subcategory_name(cat, values) {
             // alttp uses "subcategories" kind of weirdly. our categories are rulesets and our
             // subcategories are categories. so the "category" is "No Major Glitches" and the
             // "subcategory" is "Any%"; this makes it read better to format it with the
@@ -91,6 +91,12 @@ impl<'a> CategoriesRepository<'a> {
             None => Some(cat_name.clone()),
         }
     }
+
+    pub fn category_name_from_run(&self, run: &SRCRun) -> Option<String> {
+        self.category_name(&run.category, &run.values)
+    }
+
+
 }
 
 mod tests {

@@ -1,11 +1,10 @@
-#[macro_use]
 extern crate diesel;
 extern crate diesel_enum_derive;
 extern crate serde_json;
 extern crate speedrun_api;
 
 use diesel::prelude::*;
-use diesel::{Connection, SqliteConnection};
+use diesel::{ SqliteConnection};
 use diesel_migrations::MigrationHarness;
 use std::collections::HashMap;
 use std::num::NonZeroU64;
@@ -13,15 +12,27 @@ use std::time::Duration;
 
 use alttp_queue_bot::discord_client::{BotDiscordClient, DiscordError, RateLimitInfo};
 use alttp_queue_bot::models::runs::RunState::ThreadCreated;
-use alttp_queue_bot::models::runs::{NewRun, Run, RunState, UpdateRun};
-use alttp_queue_bot::src::{get_runs, CategoriesRepository, SRCRun};
+use alttp_queue_bot::models::runs::{NewRun, Run, RunState, SRCState, UpdateRun};
+use alttp_queue_bot::src::{get_run, get_runs, CategoriesRepository, SRCRun};
 use alttp_queue_bot::utils::{env_var, format_hms, secs_to_millis};
-use alttp_queue_bot::{error::*, schema, ALTTP_GAME_ID};
+use alttp_queue_bot::{error::*, get_conn, schema, ALTTP_GAME_ID};
+use speedrun_api::types::Status;
 use speedrun_api::SpeedrunApiClientAsync;
 use twilight_http::api_error::{ApiError, RatelimitedApiError};
 use twilight_http::error::ErrorType;
 use twilight_model::id::marker::ChannelMarker;
 use twilight_model::id::Id;
+
+fn thread_title(src_run: &SRCRun<'_>, categories: &CategoriesRepository<'_>) -> String {
+    format!(
+        "{} - {} in {}",
+        src_run.player().unwrap_or("Unknown player"),
+        categories
+            .category_name_from_run(src_run)
+            .unwrap_or("Unknown category".to_string()),
+        format_hms(src_run.times.primary_t),
+    )
+}
 
 /// mutates `db_run` in place
 async fn create_run_thread(
@@ -33,14 +44,7 @@ async fn create_run_thread(
     if RunState::None != db_run.state {
         return Ok(None);
     }
-    let thread_title = format!(
-        "{} - {} in {}",
-        src_run.player().unwrap_or("Unknown player"),
-        categories
-            .category_name(src_run)
-            .unwrap_or("Unknown category".to_string()),
-        format_hms(src_run.times.primary_t),
-    );
+    let thread_title = thread_title(src_run, categories);
 
     discord_client
         .create_thread(&thread_title)
@@ -82,6 +86,69 @@ async fn create_run_message(
         })
 }
 
+/// scans existing runs in "new" state and updates them & their associated threads if the runs
+/// have been verified in SRC
+/// returns vector of stringified errors if any
+async fn handle_known_runs(
+    src_client: &SpeedrunApiClientAsync,
+    discord_client: &BotDiscordClient,
+    conn: &mut SqliteConnection,
+) -> Result<Vec<String>, BotError> {
+    println!("handle known runs");
+    use alttp_queue_bot::schema::runs::dsl::{runs, src_state, state};
+    let known_runs: Vec<Run> = runs
+        .filter(src_state.eq(String::from(SRCState::New)))
+        .filter(state.eq(String::from(RunState::MessageCreated)))
+        .load::<Run>(conn)?;
+    println!("Handling {} known runs", known_runs.len());
+    let mut errors = Vec::new();
+    for mut run in known_runs {
+        // TODO(#5) unnecessary queries
+        let r = match get_run(src_client, &run.run_id).await {
+            Ok(r_) => r_,
+            Err(e) => {
+                errors.push(format!("{:?}", e));
+                continue;
+            }
+        };
+        let thread_id = match run.thread_id() {
+            Ok(tid) => tid,
+            Err(e) => {
+                println!("Error getting thread id for run {}: {:?}", run.id, e);
+                continue;
+            }
+        };
+        let status = match r.status {
+            Status::New => continue,
+            Status::Verified { .. } => SRCState::Verified,
+            Status::Rejected { .. } => SRCState::Rejected,
+        };
+        match discord_client
+            .finalize_thread(thread_id, status.symbol())
+            .await
+        {
+            Ok(did) => {println!("did work? {:?}", did)}
+            Err(e) => {
+                println!("Error updating thread: {:?}", e);
+                if e.is_404() {
+                    println!("404 error - giving up and marking run complete");
+                } else {
+                    // if the error is anything but a 404 we keep the run in this state and expect
+                    // to clean it up in a future sweep
+                    continue;
+                }
+            }
+        }
+        run.src_state = status;
+        run.state = RunState::Finalized;
+        let update = UpdateRun::from(run);
+        if let Err(e) = diesel::update(&update).set(&update).execute(conn) {
+            errors.push(e.to_string());
+        }
+    }
+    Ok(errors)
+}
+
 async fn handle_run(
     src_run: &SRCRun<'_>,
     runs_by_id: &mut HashMap<String, Run>,
@@ -98,6 +165,7 @@ async fn handle_run(
                 state: RunState::None,
                 thread_id: None,
                 run_id,
+                src_state: SRCState::New,
             };
             diesel::insert_into(schema::runs::table)
                 .values(new_run)
@@ -123,12 +191,15 @@ async fn handle_run(
     Ok(())
 }
 
-async fn run_once(
+/// scans SRC for new runs, creates records + threads for them
+async fn handle_new_runs(
     src_client: &SpeedrunApiClientAsync,
     discord_client: &BotDiscordClient,
     categories: &CategoriesRepository<'_>,
     conn: &mut SqliteConnection,
 ) -> Result<(), BotError> {
+    // TODO(#4) this doesn't need to be a full table scan (and pulling this out to the caller might
+    //          allow us to do fewer queries total, too)
     let known_runs = schema::runs::table.load::<Run>(conn)?;
     let mut runs_by_id: HashMap<String, Run> =
         HashMap::from_iter(known_runs.into_iter().map(|r| (r.run_id.clone(), r)));
@@ -155,6 +226,19 @@ async fn run_once(
     Ok(())
 }
 
+async fn run_once(
+    src_client: &SpeedrunApiClientAsync,
+    discord_client: &BotDiscordClient,
+    categories: &CategoriesRepository<'_>,
+    conn: &mut SqliteConnection,
+) -> Result<(), BotError> {
+    let errs = handle_known_runs(src_client, discord_client, conn).await?;
+    if ! errs.is_empty() {
+        println!("Error(s) processing known runs: {:?}", errs);
+    }
+    handle_new_runs(src_client, discord_client, categories, conn).await
+}
+
 fn http_error_to_ratelimit(httpe: twilight_http::Error) -> Option<RatelimitedApiError> {
     let (kind, _) = httpe.into_parts();
     match kind {
@@ -172,8 +256,7 @@ async fn main() {
     let src_client = SpeedrunApiClientAsync::new().unwrap();
     let discord_client = BotDiscordClient::new_from_env().unwrap();
     let database_url = env_var("DATABASE_URL");
-    let mut diesel_conn =
-        SqliteConnection::establish(&database_url).expect("Unable to connect to database");
+    let mut diesel_conn = get_conn(&database_url).expect("Unable to connect to database");
 
     let migrations = diesel_migrations::FileBasedMigrations::find_migrations_directory().unwrap();
     diesel_conn.run_pending_migrations(migrations).unwrap();

@@ -14,6 +14,12 @@ https://discord.com/api/oauth2/authorize?client_id=1010729369121083563&permissio
 
 # how to ORM
 
+install diesel CLI:
+
+```
+cargo install diesel_cli --no-default-features --features sqlite-bundled
+```
+
 ```
 diesel migration generate <migration name>
 

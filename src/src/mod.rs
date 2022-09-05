@@ -6,16 +6,50 @@ use futures_util::StreamExt;
 use serde::Deserialize;
 use speedrun_api::api;
 use speedrun_api::api::categories::{CategoryEmbeds, CategoryId};
-use speedrun_api::api::games::{GameCategories, GameId};
-use speedrun_api::api::runs::{RunEmbeds, RunId, Runs};
+use speedrun_api::api::games::{GameCategories, GameCategoriesBuilderError, GameId};
+use speedrun_api::api::runs::{Run, RunBuilderError, RunEmbeds, RunId, Runs, RunsBuilderError};
 use speedrun_api::api::variables::{ValueId, VariableId};
 use speedrun_api::api::{ApiError, AsyncQuery, PagedEndpointExt, Root};
 use speedrun_api::error::RestError;
-use speedrun_api::types::Names;
+use speedrun_api::types::{Names, Status};
 use speedrun_api::SpeedrunApiClientAsync;
 use std::collections::HashMap;
 
-pub type SRCError = ApiError<RestError>;
+// pub type SRCError = ApiError<RestError>;
+
+#[derive(Debug)]
+pub enum SRCError {
+    /// error getting response from SRC API
+    ApiError(ApiError<RestError>),
+    /// error constructing the query
+    /// (stringified because I don't care that much about every variant)
+    QueryBuildError(String),
+}
+
+impl From<ApiError<RestError>> for SRCError {
+    fn from(apie: ApiError<RestError>) -> Self {
+        Self::ApiError(apie)
+    }
+}
+
+impl From<RunBuilderError> for SRCError {
+    fn from(rbe: RunBuilderError) -> Self {
+        Self::QueryBuildError(rbe.to_string())
+    }
+}
+
+
+impl From<RunsBuilderError> for SRCError {
+    fn from(rbe: RunsBuilderError) -> Self {
+        Self::QueryBuildError(rbe.to_string())
+    }
+}
+
+impl From<GameCategoriesBuilderError> for SRCError {
+    fn from(gcbe: GameCategoriesBuilderError) -> Self {
+        Self::QueryBuildError(gcbe.to_string())
+    }
+}
 
 #[derive(Deserialize, Debug, Clone)]
 pub struct Value {
@@ -58,11 +92,18 @@ pub struct SRCRun<'a> {
     pub weblink: String,
     pub category: CategoryId<'a>,
     pub players: Root<Vec<PlayerEmbed>>,
+    pub status: Option<Status<'a>>,
     // this really should never be null; it can only be null on very old runs
     // but i don't want to commit to it being non-null
     pub submitted: Option<String>,
     pub times: Times,
     pub values: HashMap<VariableId<'a>, ValueId<'a>>,
+}
+
+#[derive(Deserialize, Debug)]
+pub struct SRCRunStatus<'a> {
+    pub id: RunId<'a>,
+    pub status: Status<'a>,
 }
 
 impl<'a> SRCRun<'a> {
@@ -95,8 +136,7 @@ pub async fn get_runs(src_client: &SpeedrunApiClientAsync) -> Result<Vec<SRCRun<
         .orderby(api::runs::RunsSorting::Submitted)
         .direction(api::Direction::Asc)
         .embed(RunEmbeds::Players)
-        .build()
-        .unwrap();
+        .build()?;
 
     let mut runs_stream = runs.stream::<SRCRun, SpeedrunApiClientAsync>(&src_client);
 
@@ -113,6 +153,14 @@ pub async fn get_runs(src_client: &SpeedrunApiClientAsync) -> Result<Vec<SRCRun<
     Ok(runs)
 }
 
+pub async fn get_run<'a, T: Into<RunId<'a>>>(src_client: &SpeedrunApiClientAsync, id: T) -> Result<SRCRunStatus<'a>, SRCError> {
+    let run_id = id.into();
+    let gr = Run::builder().id(run_id).build()?;
+    let o = gr.query_async(src_client).await;
+    println!("{:?}", o);
+    o.map_err(Into::into)
+}
+
 pub async fn get_categories<'a, GID: Into<GameId<'a>>>(
     game_id: GID,
     src_client: &SpeedrunApiClientAsync,
@@ -123,9 +171,8 @@ pub async fn get_categories<'a, GID: Into<GameId<'a>>>(
         .id(game_id)
         .miscellaneous(false)
         .embed(CategoryEmbeds::Variables)
-        .build()
-        .unwrap();
-    categories_q.query_async(src_client).await
+        .build()?;
+    categories_q.query_async(src_client).await.map_err(Into::into)
 }
 
 pub use category_repository::CategoriesRepository;
