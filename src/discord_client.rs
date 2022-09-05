@@ -4,13 +4,12 @@ use crate::utils::secs_to_millis;
 use dashmap::DashMap;
 use std::env;
 use std::num::NonZeroU64;
-use std::ops::Deref;
 use std::time::Duration;
 use tokio::time::Instant;
 use twilight_http::response::{DeserializeBodyError, HeaderIter};
-use twilight_http::Client;
+use twilight_http::{Client, Error, Response};
+use twilight_http::error::ErrorType;
 use twilight_model::channel::{Channel, ChannelType};
-use twilight_model::guild::NSFWLevel::Default;
 use twilight_model::id::marker::{ApplicationMarker, ChannelMarker};
 use twilight_model::id::Id;
 
@@ -52,13 +51,23 @@ pub struct BotDiscordClient {
 
 #[derive(Debug)]
 pub enum DiscordError {
-    HttpError(twilight_http::Error),
+    /// error getting a response from the API
+    HttpError(Error),
+    /// error validating something (message too long, etc)
     ValidationError(String),
+    /// body returned in an otherwise-valid response didn't deserialize properly
     DeserializeBodyError(DeserializeBodyError),
+    /// caller provided bad input
+    InvalidInput(InvalidInputError)
 }
 
-impl From<twilight_http::Error> for DiscordError {
-    fn from(e: twilight_http::Error) -> Self {
+#[derive(Debug)]
+pub enum InvalidInputError {
+    ThatsNotAThread,
+}
+
+impl From<Error> for DiscordError {
+    fn from(e: Error) -> Self {
         Self::HttpError(e)
     }
 }
@@ -66,6 +75,28 @@ impl From<twilight_http::Error> for DiscordError {
 impl From<DeserializeBodyError> for DiscordError {
     fn from(e: DeserializeBodyError) -> Self {
         Self::DeserializeBodyError(e)
+    }
+}
+
+impl From<InvalidInputError> for DiscordError {
+    fn from(iie: InvalidInputError) -> Self {
+        Self::InvalidInput(iie)
+    }
+}
+
+impl DiscordError {
+    pub fn is_404(&self) -> bool {
+        match self {
+            DiscordError::HttpError(httpe) => {
+                match httpe.kind() {
+                    ErrorType::Response {  status, .. } => {
+                        status.get() == 404
+                    }
+                    _ => false
+                }
+            }
+            _ => false
+        }
     }
 }
 
@@ -146,6 +177,40 @@ impl<'b> RateLimitInfoBuilder<'b> {
     }
 }
 
+#[derive(Debug)]
+pub struct WithRateLimitInfo<T> {
+    rli: Option<RateLimitInfo>,
+    item: T,
+}
+
+impl<T> WithRateLimitInfo<T> {
+    fn new<R>(item: T, resp: &Response<R>) -> Self {
+        Self {
+            rli: RateLimitInfo::from_headers(resp.headers()),
+            item
+        }
+    }
+
+    fn new_no_rli(item: T) -> Self {
+        Self {
+            rli: None,
+            item
+        }
+    }
+
+    /// if we have rate limiting info, and we're out of requests, this returns the duration we
+    /// should sleep for
+    /// if we are missing info or have requests left, returns None (so None might be sort of a lie)
+    pub fn sleep_time(&self) -> Option<Duration> {
+        if let Some(rli) = &self.rli {
+            if rli.remaining == 0 {
+                return Some(Duration::from_millis(rli.reset_after_millis()))
+            }
+        }
+        None
+    }
+}
+
 impl BotDiscordClient {
     pub fn new_from_env() -> Result<Self, BotError> {
         let token = env::var("BOT_TOKEN")?;
@@ -163,10 +228,13 @@ impl BotDiscordClient {
         })
     }
 
-    async fn fetch_channel(&self, id: Id<ChannelMarker>) -> Result<Channel, DiscordError> {
+    /// Fetches a channel from discord by ID (no caching)
+    pub async fn fetch_channel(&self, id: Id<ChannelMarker>) -> Result<Channel, DiscordError> {
         let resp = self.client.channel(id).exec().await?;
         Ok(resp.model().await?)
     }
+
+
 
     async fn channel<F, O>(&self, id: Id<ChannelMarker>, fn_: F) -> Result<O, DiscordError>
     where
@@ -216,6 +284,30 @@ impl BotDiscordClient {
         Ok((rli, channel))
     }
 
+    // no real reason for this to be char instead of str but it's convenient
+    /// returns true if we did any work, false if the thread was already archived
+    pub async fn finalize_thread(&self, id: Id<ChannelMarker>, new_prefix: char) -> Result<WithRateLimitInfo<bool>, DiscordError> {
+        let existing_thread = self.fetch_channel(id).await?;
+
+        if let Some(tmd) = existing_thread.thread_metadata {
+            if tmd.archived {
+                return Ok(WithRateLimitInfo::new_no_rli(false));
+            }
+        } else {
+            return Err(DiscordError::InvalidInput(InvalidInputError::ThatsNotAThread));
+        }
+        println!("Updating {:?}", existing_thread.name);
+        // i dont know how thread name could be null? but apparently it can. discord api says so.
+        let resp = self.client.update_thread(id)
+            .name(&format!("{} {}",new_prefix, existing_thread.name.unwrap_or("-".to_string())))
+            .map_err(|e| DiscordError::ValidationError(e.to_string()))?
+            .archived(true)
+            .exec()
+            .await?;
+        let rli = RateLimitInfo::from_headers(resp.headers());
+        Ok(WithRateLimitInfo::new(true, &resp))
+    }
+
     pub async fn create_message(
         &self,
         channel: Id<ChannelMarker>,
@@ -230,5 +322,5 @@ impl BotDiscordClient {
             .await?;
         Ok(RateLimitInfo::from_headers(resp.headers()))
     }
-    // TODO: async fn validate_webhook or something like that
+
 }

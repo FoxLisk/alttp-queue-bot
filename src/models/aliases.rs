@@ -1,6 +1,5 @@
 use crate::schema::category_aliases::dsl::*;
 use diesel::helper_types::{Eq, Filter};
-use diesel::internal::table_macro::FromClause;
 use diesel::prelude::*;
 
 #[derive(Queryable)]
