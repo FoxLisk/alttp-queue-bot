@@ -1,0 +1,29 @@
+appenders:
+  stdout:
+    kind: console
+    encoder:
+      pattern: "{d(%+)(utc)} [{f}:{L}] {h({l})} {M}:{m}{n}"
+  file:
+    kind: rolling_file
+    path: "/var/log/alttp-queue-bot.log"
+    encoder:
+      pattern: "{d(%+)(utc)} [{f}:{L}] {h({l})} {M}:{m}{n}"
+    policy:
+      kind: compound
+      trigger:
+        kind: size
+        limit: '100 kb'
+      roller:
+        kind: fixed_window
+        pattern: "blargh.{}.log.gz"
+        count: 10
+        base: 1
+
+root:
+  level: info
+  appenders:
+    - stdout
+    - file
+loggers:
+  bot:
+    level: debug

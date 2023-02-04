@@ -1,0 +1,28 @@
+appenders:
+  stdout:
+    kind: console
+    encoder:
+      pattern: "{d(%+)(utc)} [{f}:{L}] {h({l})} {M}:{m}{n}"
+  file:
+    kind: rolling_file
+    path: "blargh.log"
+    encoder:
+      pattern: "{d(%+)(utc)} [{f}:{L}] {h({l})} {M}:{m}{n}"
+    policy:
+      kind: compound
+      trigger:
+        kind: size
+        limit: '1 kb'
+      roller:
+        kind: fixed_window
+        pattern: "blargh.{}.log.gz"
+        count: 5
+        base: 1
+
+root:
+  level: info
+  appenders:
+    - stdout
+loggers:
+  bot:
+    level: debug

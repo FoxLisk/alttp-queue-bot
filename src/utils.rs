@@ -35,6 +35,7 @@ pub fn env_var(key: &str) -> String {
     std::env::var(key).expect(&format!("Missing environment variable: `{}`", key))
 }
 
+#[cfg(test)]
 mod tests {
     use crate::utils::format_hms;
 

@@ -49,40 +49,28 @@ pub struct BotDiscordClient {
     channel_info_ttl: Duration,
 }
 
-#[derive(Debug)]
+#[derive(Debug, thiserror::Error)]
 pub enum DiscordError {
     /// error getting a response from the API
-    HttpError(Error),
+    #[error("API Error: {0}")]
+    HttpError(#[from] Error),
     /// error validating something (message too long, etc)
+    #[error("Validation error: {0}")]
     ValidationError(String),
     /// body returned in an otherwise-valid response didn't deserialize properly
-    DeserializeBodyError(DeserializeBodyError),
+    #[error("Deserialization error in otherwise valid response: {0}")]
+    DeserializeBodyError(#[from] DeserializeBodyError),
     /// caller provided bad input
-    InvalidInput(InvalidInputError)
+    #[error("Programmer error invalid input: {0}")]
+    InvalidInput(#[from] InvalidInputError)
 }
 
-#[derive(Debug)]
+#[derive(Debug, thiserror::Error)]
 pub enum InvalidInputError {
+    #[error("Expected thread, got something else (channel?)")]
     ThatsNotAThread,
 }
 
-impl From<Error> for DiscordError {
-    fn from(e: Error) -> Self {
-        Self::HttpError(e)
-    }
-}
-
-impl From<DeserializeBodyError> for DiscordError {
-    fn from(e: DeserializeBodyError) -> Self {
-        Self::DeserializeBodyError(e)
-    }
-}
-
-impl From<InvalidInputError> for DiscordError {
-    fn from(iie: InvalidInputError) -> Self {
-        Self::InvalidInput(iie)
-    }
-}
 
 impl DiscordError {
     pub fn is_404(&self) -> bool {
@@ -220,7 +208,6 @@ impl<T> WithRateLimitInfo<T> {
     }
 
     /// sleeps for the amount of time discord told us to, if any
-    #[must_use]
     pub async fn sleep(&self) {
         if let Some(sleep_time) = self.sleep_time() {
             tokio::time::sleep(sleep_time).await;

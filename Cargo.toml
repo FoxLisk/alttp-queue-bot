@@ -27,6 +27,9 @@ libsqlite3-sys = { version = "=0.24.2", features = ["bundled"]}
 diesel = { version = "2.0.0-rc.1", features = ["sqlite", "returning_clauses_for_sqlite_3_35"] }
 diesel_migrations = "2.0.0-rc.1"
 dashmap = "5.3.4"
+log4rs = { version = "1.2.0", features = ["gzip"] }
+log = "0.4.17"
+thiserror = "1.0.37"
 #speedrun-api = "1.1.1"
 
 [dependencies.speedrun-api]

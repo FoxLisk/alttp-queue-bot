@@ -2,18 +2,18 @@ extern crate diesel;
 extern crate diesel_enum_derive;
 extern crate serde_json;
 extern crate speedrun_api;
+extern crate log4rs;
 
 use diesel::prelude::*;
 use diesel::{ SqliteConnection};
 use diesel_migrations::MigrationHarness;
 use std::collections::HashMap;
-use std::io::stdout;
 use std::num::NonZeroU64;
+use std::path::Path;
 use std::time::Duration;
-use futures_util::{FutureExt, TryFutureExt};
-use speedrun_api::error::RestError;
+use futures_util::{ TryFutureExt};
 
-use alttp_queue_bot::discord_client::{BotDiscordClient, DiscordError, RateLimitInfo, WithRateLimitInfo};
+use alttp_queue_bot::discord_client::{BotDiscordClient, DiscordError};
 use alttp_queue_bot::models::runs::RunState::ThreadCreated;
 use alttp_queue_bot::models::runs::{NewRun, Run, RunState, SRCState, UpdateRun};
 use alttp_queue_bot::src::{get_run, get_runs, CategoriesRepository, SRCRun, SRCError};
@@ -25,6 +25,7 @@ use twilight_http::api_error::{ApiError, RatelimitedApiError};
 use twilight_http::error::ErrorType;
 use twilight_model::id::marker::ChannelMarker;
 use twilight_model::id::Id;
+use log::{ debug, info, warn, };
 
 fn thread_title(src_run: &SRCRun<'_>, categories: &CategoriesRepository<'_>) -> String {
     format!(
@@ -95,7 +96,6 @@ async fn finalize_thread(discord_client: &BotDiscordClient, thread_id: Id<Channe
     let did = discord_client
         .finalize_thread(thread_id, status)
         .await?;
-    println!("did work? {:?}", did);
     did.sleep().await;
     Ok(())
 }
@@ -114,7 +114,7 @@ async fn handle_known_runs(
         .filter(src_state.eq(String::from(SRCState::New)))
         .filter(state.eq(String::from(RunState::MessageCreated)))
         .load::<Run>(conn)?;
-    println!("Handling {} known runs", known_runs.len());
+    info!("Handling {} known runs", known_runs.len());
     let mut errors = Vec::new();
     for mut run in known_runs {
         let thread_id = match run.thread_id() {
@@ -140,7 +140,7 @@ async fn handle_known_runs(
                                 finalize_thread(discord_client, thread_id, '☠').await
                             })
                             .await {
-                            println!("Error updating discord vis-a-vis a removed SRC run");
+                            warn!("Error updating discord vis-a-vis a removed SRC run: {e}");
                         }
                         // either way we update the run
                         run.state = RunState::Finalized;
@@ -225,7 +225,7 @@ async fn handle_new_runs(
     let mut runs_by_id: HashMap<String, Run> =
         HashMap::from_iter(known_runs.into_iter().map(|r| (r.run_id.clone(), r)));
     let runs = get_runs(&src_client).await?;
-    println!("Processing {} runs in the src queue", runs.len());
+    info!("Processing {} runs in the src queue", runs.len());
     for run in runs {
         if let Err(e) = handle_run(&run, &mut runs_by_id, conn, discord_client, categories).await {
             if let BotError::DiscordError(DiscordError::HttpError(httpe)) = e {
@@ -233,14 +233,14 @@ async fn handle_new_runs(
                     // this is happening despite my efforts to avoid rate limits above, for some
                     // reason. best to just handle it i guess
                     let tts = secs_to_millis(rle.retry_after);
-                    println!(
+                    debug!(
                         "Rate limited processing {:?}: sleeping for {} -  {:?}",
                         run, tts, rle
                     );
                     tokio::time::sleep(Duration::from_millis(tts)).await;
                 }
             } else {
-                println!("Error handling run {:?}: {:?}", run, e);
+                warn!("Error handling run {:?}: {:?}", run, e);
             }
         }
     }
@@ -255,7 +255,7 @@ async fn run_once(
 ) -> Result<(), BotError> {
     let errs = handle_known_runs(src_client, discord_client, conn).await?;
     if ! errs.is_empty() {
-        println!("Error(s) processing known runs: {:?}", errs);
+        warn!("Error(s) processing known runs: {:?}", errs);
     }
     handle_new_runs(src_client, discord_client, categories, conn).await
 }
@@ -275,6 +275,8 @@ fn http_error_to_ratelimit(httpe: twilight_http::Error) -> Option<RatelimitedApi
 async fn main() {
     println!("Starting up");
     dotenv::dotenv().unwrap();
+    let log_config_path = env_var("LOG4RS_CONFIG_FILE");
+    log4rs::init_file(Path::new(&log_config_path), Default::default()).expect("Couldn't initialize logging");
     let src_client = SpeedrunApiClientAsync::new().unwrap();
     let discord_client = BotDiscordClient::new_from_env().unwrap();
     let database_url = env_var("DATABASE_URL");
@@ -294,7 +296,7 @@ async fn main() {
     loop {
         interval.tick().await;
         if let Err(e) = run_once(&src_client, &discord_client, &cr, &mut diesel_conn).await {
-            println!("Error: {:?}", e);
+            warn!("Error: {:?}", e);
         }
     }
 

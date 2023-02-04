@@ -99,9 +99,10 @@ impl<'a> CategoriesRepository<'a> {
 
 }
 
+#[cfg(test)]
 mod tests {
     use crate::models::aliases::CategoryAlias;
-    use crate::src::Category;
+    use crate::src::{CategoriesRepository, Category};
 
     #[test]
     fn test_nice_name() {
