@@ -15,7 +15,7 @@ appenders:
         limit: '100 kb'
       roller:
         kind: fixed_window
-        pattern: "blargh.{}.log.gz"
+        pattern: "/var/log/alttp-queue-bot.{}.log"
         count: 10
         base: 1
 

@@ -2,3 +2,5 @@
 .env
 .env
 alttp_queue.db3
+/logs/*
+*.log.gz
