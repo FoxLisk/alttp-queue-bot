@@ -180,13 +180,22 @@ impl<'b> RateLimitInfoBuilder<'b> {
 #[derive(Debug)]
 pub struct WithRateLimitInfo<T> {
     rli: Option<RateLimitInfo>,
-    item: T,
+    pub item: T,
 }
 
 impl<T> WithRateLimitInfo<T> {
     fn new<R>(item: T, resp: &Response<R>) -> Self {
         Self {
             rli: RateLimitInfo::from_headers(resp.headers()),
+            item
+        }
+    }
+
+    /// `resp.model()` consumes `resp` so you might have to build the RLI before constructing
+    /// this object
+    fn with_rli(item: T, rli: Option<RateLimitInfo>) -> Self {
+        Self {
+            rli,
             item
         }
     }
@@ -208,6 +217,14 @@ impl<T> WithRateLimitInfo<T> {
             }
         }
         None
+    }
+
+    /// sleeps for the amount of time discord told us to, if any
+    #[must_use]
+    pub async fn sleep(&self) {
+        if let Some(sleep_time) = self.sleep_time() {
+            tokio::time::sleep(sleep_time).await;
+        }
     }
 }
 
@@ -233,8 +250,6 @@ impl BotDiscordClient {
         let resp = self.client.channel(id).exec().await?;
         Ok(resp.model().await?)
     }
-
-
 
     async fn channel<F, O>(&self, id: Id<ChannelMarker>, fn_: F) -> Result<O, DiscordError>
     where
@@ -262,7 +277,7 @@ impl BotDiscordClient {
     pub async fn create_thread(
         &self,
         thread_name: &str,
-    ) -> Result<(Option<RateLimitInfo>, Channel), DiscordError> {
+    ) -> Result<WithRateLimitInfo<Channel>, DiscordError> {
         let archive_duration = self
             .channel(self.channel_id.clone(), |c| c.default_auto_archive_duration)
             .await
@@ -281,7 +296,7 @@ impl BotDiscordClient {
         let resp = req.exec().await?;
         let rli = RateLimitInfo::from_headers(resp.headers());
         let channel = resp.model().await?;
-        Ok((rli, channel))
+        Ok(WithRateLimitInfo::with_rli(channel, rli))
     }
 
     // no real reason for this to be char instead of str but it's convenient
@@ -304,7 +319,6 @@ impl BotDiscordClient {
             .archived(true)
             .exec()
             .await?;
-        let rli = RateLimitInfo::from_headers(resp.headers());
         Ok(WithRateLimitInfo::new(true, &resp))
     }
 
@@ -312,7 +326,7 @@ impl BotDiscordClient {
         &self,
         channel: Id<ChannelMarker>,
         content: &str,
-    ) -> Result<Option<RateLimitInfo>, DiscordError> {
+    ) -> Result<WithRateLimitInfo<()>, DiscordError> {
         let resp = self
             .client
             .create_message(channel)
@@ -320,7 +334,7 @@ impl BotDiscordClient {
             .map_err(|e| DiscordError::ValidationError(e.to_string()))?
             .exec()
             .await?;
-        Ok(RateLimitInfo::from_headers(resp.headers()))
+        Ok(WithRateLimitInfo::new((), &resp))
     }
 
 }
