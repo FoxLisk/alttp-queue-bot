@@ -12,10 +12,10 @@ appenders:
       kind: compound
       trigger:
         kind: size
-        limit: '100 kb'
+        limit: '1 mb'
       roller:
         kind: fixed_window
-        pattern: "/var/log/alttp-queue-bot.{}.log"
+        pattern: "/var/log/alttp-queue-bot.{}.log.gz"
         count: 10
         base: 1
 
