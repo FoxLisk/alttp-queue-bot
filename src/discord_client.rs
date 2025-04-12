@@ -1,52 +1,21 @@
 use crate::error::BotError;
-use crate::utils::env_var;
 use crate::utils::secs_to_millis;
-use dashmap::DashMap;
 use std::env;
 use std::num::NonZeroU64;
 use std::time::Duration;
-use tokio::time::Instant;
+use twilight_http::error::ErrorType;
 use twilight_http::response::{DeserializeBodyError, HeaderIter};
 use twilight_http::{Client, Error, Response};
-use twilight_http::error::ErrorType;
-use twilight_model::channel::{Channel, ChannelType};
+use twilight_model::channel::embed::Embed;
+use twilight_model::channel::Channel;
 use twilight_model::id::marker::{ApplicationMarker, ChannelMarker};
 use twilight_model::id::Id;
-
-struct Fetched<T> {
-    item: T,
-    fetched: Instant,
-}
-
-impl<T> Fetched<T> {
-    fn is_expired(&self, duration: &Duration) -> bool {
-        &(Instant::now() - self.fetched) > duration
-    }
-
-    fn replace(&mut self, item: T) {
-        self.item = item;
-        self.fetched = Instant::now();
-    }
-
-    fn new(item: T) -> Self {
-        Self {
-            item,
-            fetched: Instant::now(),
-        }
-    }
-
-    fn get(&self) -> &T {
-        &self.item
-    }
-}
 
 pub struct BotDiscordClient {
     application_id: Id<ApplicationMarker>,
     // TODO: this shouldn't all be top-level really
     pub channel_id: Id<ChannelMarker>,
     pub client: Client,
-    channels: DashMap<Id<ChannelMarker>, Fetched<Channel>>,
-    channel_info_ttl: Duration,
 }
 
 #[derive(Debug, thiserror::Error)]
@@ -62,7 +31,7 @@ pub enum DiscordError {
     DeserializeBodyError(#[from] DeserializeBodyError),
     /// caller provided bad input
     #[error("Programmer error invalid input: {0}")]
-    InvalidInput(#[from] InvalidInputError)
+    InvalidInput(#[from] InvalidInputError),
 }
 
 #[derive(Debug, thiserror::Error)]
@@ -71,19 +40,14 @@ pub enum InvalidInputError {
     ThatsNotAThread,
 }
 
-
 impl DiscordError {
     pub fn is_404(&self) -> bool {
         match self {
-            DiscordError::HttpError(httpe) => {
-                match httpe.kind() {
-                    ErrorType::Response {  status, .. } => {
-                        status.get() == 404
-                    }
-                    _ => false
-                }
-            }
-            _ => false
+            DiscordError::HttpError(httpe) => match httpe.kind() {
+                ErrorType::Response { status, .. } => status.get() == 404,
+                _ => false,
+            },
+            _ => false,
         }
     }
 }
@@ -175,23 +139,7 @@ impl<T> WithRateLimitInfo<T> {
     fn new<R>(item: T, resp: &Response<R>) -> Self {
         Self {
             rli: RateLimitInfo::from_headers(resp.headers()),
-            item
-        }
-    }
-
-    /// `resp.model()` consumes `resp` so you might have to build the RLI before constructing
-    /// this object
-    fn with_rli(item: T, rli: Option<RateLimitInfo>) -> Self {
-        Self {
-            rli,
-            item
-        }
-    }
-
-    fn new_no_rli(item: T) -> Self {
-        Self {
-            rli: None,
-            item
+            item,
         }
     }
 
@@ -201,7 +149,7 @@ impl<T> WithRateLimitInfo<T> {
     pub fn sleep_time(&self) -> Option<Duration> {
         if let Some(rli) = &self.rli {
             if rli.remaining == 0 {
-                return Some(Duration::from_millis(rli.reset_after_millis()))
+                return Some(Duration::from_millis(rli.reset_after_millis()));
             }
         }
         None
@@ -222,13 +170,10 @@ impl BotDiscordClient {
             Id::<ApplicationMarker>::from(env::var("APPLICATION_ID")?.parse::<NonZeroU64>()?);
         let channel_id = Id::<ChannelMarker>::from(env::var("CHANNEL_ID")?.parse::<NonZeroU64>()?);
         let client = Client::new(token);
-        let channel_info_ttl = Duration::from_secs(env_var("CHANNEL_INFO_TTL_SECS").parse::<u64>()?);
         Ok(Self {
             client,
             application_id,
             channel_id,
-            channels: DashMap::new(),
-            channel_info_ttl,
         })
     }
 
@@ -238,90 +183,17 @@ impl BotDiscordClient {
         Ok(resp.model().await?)
     }
 
-    async fn channel<F, O>(&self, id: Id<ChannelMarker>, fn_: F) -> Result<O, DiscordError>
-    where
-        F: FnOnce(&Channel) -> O,
-    {
-        let res = match self.channels.get_mut(&id) {
-            Some(mut f) => {
-                if f.is_expired(&self.channel_info_ttl) {
-                    let c = self.fetch_channel(id.clone()).await?;
-                    f.replace(c);
-                }
-                fn_(f.get())
-            }
-            None => {
-                let c = self.fetch_channel(id.clone()).await?;
-                let out = fn_(&c);
-                let f = Fetched::new(c);
-                self.channels.insert(id.clone(), f);
-                out
-            }
-        };
-        Ok(res)
-    }
-
-    pub async fn create_thread(
-        &self,
-        thread_name: &str,
-    ) -> Result<WithRateLimitInfo<Channel>, DiscordError> {
-        let archive_duration = self
-            .channel(self.channel_id.clone(), |c| c.default_auto_archive_duration)
-            .await
-            .unwrap_or(None);
-        let mut req = self
-            .client
-            .create_thread(
-                self.channel_id.clone(),
-                thread_name,
-                ChannelType::GuildPublicThread,
-            )
-            .map_err(|e| DiscordError::ValidationError(e.to_string()))?;
-        if let Some(ad) = archive_duration {
-            req = req.auto_archive_duration(ad);
-        }
-        let resp = req.exec().await?;
-        let rli = RateLimitInfo::from_headers(resp.headers());
-        let channel = resp.model().await?;
-        Ok(WithRateLimitInfo::with_rli(channel, rli))
-    }
-
-    // no real reason for this to be char instead of str but it's convenient
-    /// returns true if we did any work, false if the thread was already archived
-    pub async fn finalize_thread(&self, id: Id<ChannelMarker>, new_prefix: char) -> Result<WithRateLimitInfo<bool>, DiscordError> {
-        let existing_thread = self.fetch_channel(id).await?;
-
-        if let Some(tmd) = existing_thread.thread_metadata {
-            if tmd.archived {
-                return Ok(WithRateLimitInfo::new_no_rli(false));
-            }
-        } else {
-            return Err(DiscordError::InvalidInput(InvalidInputError::ThatsNotAThread));
-        }
-        println!("Updating {:?}", existing_thread.name);
-        // i dont know how thread name could be null? but apparently it can. discord api says so.
-        let resp = self.client.update_thread(id)
-            .name(&format!("{} {}",new_prefix, existing_thread.name.unwrap_or("-".to_string())))
-            .map_err(|e| DiscordError::ValidationError(e.to_string()))?
-            .archived(true)
-            .exec()
-            .await?;
-        Ok(WithRateLimitInfo::new(true, &resp))
-    }
-
     pub async fn create_message(
         &self,
-        channel: Id<ChannelMarker>,
-        content: &str,
+        embeds: Vec<Embed>,
     ) -> Result<WithRateLimitInfo<()>, DiscordError> {
         let resp = self
             .client
-            .create_message(channel)
-            .content(content)
+            .create_message(self.channel_id)
+            .embeds(&embeds)
             .map_err(|e| DiscordError::ValidationError(e.to_string()))?
             .exec()
             .await?;
         Ok(WithRateLimitInfo::new((), &resp))
     }
-
 }

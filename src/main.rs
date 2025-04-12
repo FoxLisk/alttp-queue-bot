@@ -1,183 +1,133 @@
 extern crate diesel;
-extern crate diesel_enum_derive;
+extern crate log4rs;
 extern crate serde_json;
 extern crate speedrun_api;
-extern crate log4rs;
 
 use diesel::prelude::*;
-use diesel::{ SqliteConnection};
+use diesel::SqliteConnection;
 use diesel_migrations::MigrationHarness;
+use rand::rng;
+use rand::seq::IndexedRandom;
 use std::collections::HashMap;
-use std::num::NonZeroU64;
 use std::path::Path;
 use std::time::Duration;
-use futures_util::{ TryFutureExt};
+use twilight_model::channel::embed::Embed;
+use twilight_model::channel::embed::EmbedField;
 
 use alttp_queue_bot::discord_client::{BotDiscordClient, DiscordError};
-use alttp_queue_bot::models::runs::RunState::ThreadCreated;
-use alttp_queue_bot::models::runs::{NewRun, Run, RunState, SRCState, UpdateRun};
-use alttp_queue_bot::src::{get_run, get_runs, CategoriesRepository, SRCRun, SRCError};
+use alttp_queue_bot::models::runs::{NewRun, Run};
+use alttp_queue_bot::src::{get_runs, CategoriesRepository, SRCRun};
 use alttp_queue_bot::utils::{env_var, format_hms, secs_to_millis};
 use alttp_queue_bot::{error::*, get_conn, schema, ALTTP_GAME_ID};
-use speedrun_api::types::Status;
+use log::{debug, info, warn};
 use speedrun_api::SpeedrunApiClientAsync;
 use twilight_http::api_error::{ApiError, RatelimitedApiError};
 use twilight_http::error::ErrorType;
-use twilight_model::id::marker::ChannelMarker;
-use twilight_model::id::Id;
-use log::{ debug, info, warn, };
-
-fn thread_title(src_run: &SRCRun<'_>, categories: &CategoriesRepository<'_>) -> String {
-    format!(
-        "{} - {} in {}",
-        src_run.player().unwrap_or("Unknown player"),
-        categories
-            .category_name_from_run(src_run)
-            .unwrap_or("Unknown category".to_string()),
-        format_hms(src_run.times.primary_t),
-    )
-}
-
-/// mutates `db_run` in place
-async fn create_run_thread(
-    src_run: &SRCRun<'_>,
-    db_run: &mut Run,
-    discord_client: &BotDiscordClient,
-    categories: &CategoriesRepository<'_>,
-) -> Result<(), DiscordError> {
-    if RunState::None != db_run.state {
-        return Ok(());
-    }
-    let thread_title = thread_title(src_run, categories);
-
-    let wrli = discord_client
-        .create_thread(&thread_title)
-        .await?;
-
-    db_run.thread_id = Some(wrli.item.id.to_string());
-    db_run.state = ThreadCreated;
-    wrli.sleep().await;
-    Ok(())
-}
 
 /// mutates `db_run` in place
 /// sleeps off discord time
 async fn create_run_message(
     src_run: &SRCRun<'_>,
-    db_run: &mut Run,
     discord_client: &BotDiscordClient,
+    categories: &CategoriesRepository<'_>,
 ) -> Result<(), BotError> {
-    if ThreadCreated != db_run.state {
-        return Ok(());
-    }
-    let thread_id = match &db_run.thread_id {
-        Some(t) => t,
-        None => {
-            return Err(BotError::InvalidState(format!(
-                "Run {} was in state {} but has no thread id",
-                db_run.id,
-                String::from(&db_run.state),
-            )));
-        }
-    };
-    let channel_id = Id::<ChannelMarker>::from(thread_id.parse::<NonZeroU64>()?);
-    let rli =  discord_client
-        .create_message(channel_id, &src_run.weblink)
+    let titles = vec![
+        "New PB arrived!",
+        "Anotha one",
+        "🚨 PB ALERT 🚨",
+        "Meowski get on this one",
+        "gaming?!",
+        "someone was eating their wheaties",
+        "get a load of this guy",
+        "of all the runs I've seen...",
+        "an ostentatious display of skill",
+        "absolutely cracked",
+        "this run is built different",
+        "speed incarnate",
+        "a true gamer moment",
+        "unreal gaming skills",
+        "this is peak performance",
+        "legendary run",
+        "a masterpiece of speedrunning",
+        "this run deserves a medal",
+        "phenomenal execution",
+        "a run for the ages",
+        "next-level gaming",
+        "a true display of mastery",
+        "this run is fire",
+        "insane gameplay",
+        "elite speedrunning",
+        "this run is art 🎨",
+        "unbelievable performance",
+        "a run to remember",
+        "probably spliced",
+        "always check helma/arrghus!",
+        "some people have all the luck!",
+        "how many capespins in this one?",
+        "doomtaDisdainfulDonny",
+        "swifARTISTE",
+        "will this one start a fight?",
+        "is this WR pace?",
+        "did someone say 'poggers'?",
+        "this run is bussin' fr fr",
+        "a certified hood classic",
+        "MY GOAT",
+        "absolutely no cap",
+        "this run is sus 🕵️",
+        "a true sigma grindset",
+        "chef's kiss 👨‍🍳💋",
+        "GoatEmotey",
+        "superm209Eyes",
+        "now THIS is a 24/7 Andy Watch Party",
+        "its lmos league",
+        "don't forget to show your keybinds!",
+        "someone's hogging all the PB paste",
+        "this needs to be retimed",
+    ];
+
+    let mut rng = rng();
+    let title = titles.choose(&mut rng).map(|s| s.to_string());
+
+    let embeds = vec![Embed {
+        author: None,
+        color: None,
+        description: None,
+        fields: vec![
+            EmbedField {
+                inline: true,
+                name: "Runner".to_string(),
+                value: src_run.player().unwrap_or("Unknown").to_string(),
+            },
+            EmbedField {
+                inline: true,
+                name: "Category".to_string(),
+                value: categories
+                    .category_name_from_run(src_run)
+                    .unwrap_or("Unknown".to_string()),
+            },
+            EmbedField {
+                inline: true,
+                name: "Time".to_string(),
+                value: format_hms(src_run.times.primary_t),
+            },
+        ],
+        footer: None,
+        image: None,
+        kind: "rich".to_string(),
+        provider: None,
+        thumbnail: None,
+        timestamp: None,
+        title,
+        url: Some(src_run.weblink.to_string()),
+        video: None,
+    }];
+
+    let rli = discord_client
+        .create_message(embeds)
         .await
         .map_err(BotError::from)?;
     rli.sleep().await;
-    db_run.state = RunState::MessageCreated;
     Ok(())
-}
-
-async fn finalize_thread(discord_client: &BotDiscordClient, thread_id: Id<ChannelMarker>, status: char,) ->
-    Result<(), DiscordError>
-{
-    let did = discord_client
-        .finalize_thread(thread_id, status)
-        .await?;
-    did.sleep().await;
-    Ok(())
-}
-
-
-/// scans existing runs in "new" state and updates them & their associated threads if the runs
-/// have been verified in SRC
-/// returns vector of stringified errors if any
-async fn handle_known_runs(
-    src_client: &SpeedrunApiClientAsync,
-    discord_client: &BotDiscordClient,
-    conn: &mut SqliteConnection,
-) -> Result<Vec<String>, BotError> {
-    use alttp_queue_bot::schema::runs::dsl::{runs, src_state, state};
-    let known_runs: Vec<Run> = runs
-        .filter(src_state.eq(String::from(SRCState::New)))
-        .filter(state.eq(String::from(RunState::MessageCreated)))
-        .load::<Run>(conn)?;
-    info!("Handling {} known runs", known_runs.len());
-    let mut errors = Vec::new();
-    for mut run in known_runs {
-        let thread_id = match run.thread_id() {
-            Ok(tid) => tid,
-            Err(e) => {
-                errors.push(format!("Error getting thread id for run {}: {:?}", run.id, e));
-                continue;
-            }
-        };
-        // TODO(#5) unnecessary queries
-        let r = match get_run(src_client, &run.run_id).await {
-            Ok(r_) => r_,
-            Err(e) => {
-                if let SRCError::ApiError(speedrun_api::api::ApiError::SpeedrunApi(se)) = &e {
-                    // we dont get back this information anywhere else unfortunately
-                    if se.contains("could not be found.") {
-                        if let Err(e) = discord_client.create_message(
-                            thread_id,
-                            "This run has been removed from SRC."
-                        )
-                            .and_then(|rli| async move { rli.sleep().await; Ok(()) })
-                            .and_then(|()| async {
-                                finalize_thread(discord_client, thread_id, '☠').await
-                            })
-                            .await {
-                            warn!("Error updating discord vis-a-vis a removed SRC run: {e}");
-                        }
-                        // either way we update the run
-                        run.state = RunState::Finalized;
-                        let update = UpdateRun::from(run);
-                        if let Err(e) = diesel::update(&update).set(&update).execute(conn) {
-                            errors.push(e.to_string());
-                        }
-                    }
-                }
-                errors.push(format!("{:?}", e));
-                continue;
-            }
-        };
-        let status = match r.status {
-            Status::New => continue,
-            Status::Verified { .. } => SRCState::Verified,
-            Status::Rejected { .. } => SRCState::Rejected,
-        };
-        if let Err(e) = finalize_thread( discord_client, thread_id, status.symbol(),).await {
-            let err = if e.is_404() {
-                format!("404 error updating thread for run {}: {:?}", run.id, e)
-            } else {
-                format!("Error updating thread for run {}: {:?}", run.id, e)
-                // if the error is anything but a 404 we keep the run in this state and expect
-                // to clean it up in a future sweep
-            };
-            errors.push(err);
-            continue;
-        }
-        run.src_state = status;
-        run.state = RunState::Finalized;
-        let update = UpdateRun::from(run);
-        if let Err(e) = diesel::update(&update).set(&update).execute(conn) {
-            errors.push(e.to_string());
-        }
-    }
-    Ok(errors)
 }
 
 async fn handle_run(
@@ -188,27 +138,23 @@ async fn handle_run(
     categories: &CategoriesRepository<'_>,
 ) -> Result<(), BotError> {
     let run_id = src_run.id.to_string();
-    let mut run = match runs_by_id.remove(&run_id) {
-        Some(r) => r,
-        None => {
-            let new_run = NewRun {
-                submitted: src_run.submitted.as_ref().map(|s| s.as_str()),
-                state: RunState::None,
-                thread_id: None,
-                run_id,
-                src_state: SRCState::New,
-            };
-            diesel::insert_into(schema::runs::table)
-                .values(new_run)
-                .get_result(conn)?
-        }
+
+    if let Some(_r) = runs_by_id.get(&run_id) {
+        // this run is already in the db, so we don't need to do anything
+        return Ok(());
+    }
+
+    create_run_message(&src_run, discord_client, categories).await?;
+    // only create the run after we've posted about it, now that all we are doing is making
+    // one post about it
+    let new_run = NewRun {
+        submitted: src_run.submitted.as_ref().map(|s| s.as_str()),
+        run_id,
     };
+    diesel::insert_into(schema::runs::table)
+        .values(new_run)
+        .execute(conn)?;
 
-    create_run_thread(&src_run, &mut run, discord_client, categories).await?;
-    create_run_message(&src_run, &mut run, discord_client).await?;
-
-    let changes = UpdateRun::from(run);
-    diesel::update(&changes).set(&changes).execute(conn)?;
     Ok(())
 }
 
@@ -253,10 +199,6 @@ async fn run_once(
     categories: &CategoriesRepository<'_>,
     conn: &mut SqliteConnection,
 ) -> Result<(), BotError> {
-    let errs = handle_known_runs(src_client, discord_client, conn).await?;
-    if ! errs.is_empty() {
-        warn!("Error(s) processing known runs: {:?}", errs);
-    }
     handle_new_runs(src_client, discord_client, categories, conn).await
 }
 
@@ -276,7 +218,8 @@ async fn main() {
     println!("Starting up");
     dotenv::dotenv().unwrap();
     let log_config_path = env_var("LOG4RS_CONFIG_FILE");
-    log4rs::init_file(Path::new(&log_config_path), Default::default()).expect("Couldn't initialize logging");
+    log4rs::init_file(Path::new(&log_config_path), Default::default())
+        .expect("Couldn't initialize logging");
     let src_client = SpeedrunApiClientAsync::new().unwrap();
     let discord_client = BotDiscordClient::new_from_env().unwrap();
     let database_url = env_var("DATABASE_URL");

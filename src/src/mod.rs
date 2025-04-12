@@ -93,7 +93,8 @@ pub struct SRCRun<'a> {
     pub category: CategoryId<'a>,
     pub players: Root<Vec<PlayerEmbed>>,
     pub status: Option<Status<'a>>,
-    // this really should never be null; it can only be null on very old runs
+    // this is a datetime of when the run was submitted
+    // it really should never be null; it can only be null on very old runs
     // but i don't want to commit to it being non-null
     pub submitted: Option<String>,
     pub times: Times,
